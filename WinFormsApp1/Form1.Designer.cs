@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             button_1 = new Button();
-            button_4 = new Button();
-            button_7 = new Button();
             button_2 = new Button();
-            button_5 = new Button();
-            button_8 = new Button();
             button_3 = new Button();
+            button_4 = new Button();
+            button_5 = new Button();
             button_6 = new Button();
+            button_7 = new Button();
+            button_8 = new Button();
             button_9 = new Button();
             button_0 = new Button();
             button_equals = new Button();
