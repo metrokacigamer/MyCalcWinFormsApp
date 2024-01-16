@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,12 +76,53 @@ namespace ConsoleApp1
             operands.RemoveAll(x => x.Equals(string.Empty));
             operators.RemoveAll(x => x.Equals(default));
 
-            return operands[0];
+            var res = operands[0];
+            var lastResult = StringToReturn(res);
+            return lastResult;
         }
+
+        private static string StringToReturn(string res)
+        {
+            var index = 0;
+            if (LastOperandContainsDecimal(res))
+            {
+                index = res.Select((x, i) => new { Character = x, Index = i })
+                                    .LastOrDefault(x => x.Character == '.')
+                                    .Index;
+            }
+            if ((index == default && res.Length > 15) || index > 15)
+            {
+                return $"{res[0]}.{res[1]}{res[2]}{res[3]}e+{index}";
+            }
+            else if (res.Length - index + 1 > 12)
+                return res.Substring(0, index + 12);
+            else
+                return res;
+        }
+
         public static bool IsOperator(char el)
         {
             return el == '+' || el == '-' || el == '*' || el == '/';
         }
+
+        public static bool LastOperandContainsDecimal(string expr)
+        {
+            if (!expr.Contains('.'))
+                return false;
+            var anonVar = expr.Select((x, i) => new { Character = x, Index = i })
+                            .LastOrDefault(x => IsOperator(x.Character));
+            var index = (anonVar == default) ? 0 : anonVar.Index;
+            var lastOperand = expr.Substring(index);
+            if (lastOperand.Contains('.'))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static string ComputeExpression(string str)
         {
             var tempStr = new StringBuilder(str);
@@ -213,6 +255,22 @@ namespace ConsoleApp1
             var newStr2 = new string(' ', count);
             newStr = newStr.Insert(startingIndex + stringResult.Length, newStr2);
             str = new StringBuilder(newStr);
+        }
+
+        public static string WhatToAdd(string text)
+        {
+            if (Funcs.LastOperandContainsDecimal(text))
+            {
+                return string.Empty;
+            }
+            else if (text == string.Empty || Funcs.IsOperator(text.Last()))
+            {
+                return "0.";
+            }
+            else
+            {
+                return ".";
+            }
         }
     }
 }

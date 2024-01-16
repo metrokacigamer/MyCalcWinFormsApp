@@ -60,26 +60,6 @@
             button_1.UseVisualStyleBackColor = true;
             button_1.Click += button1_Click;
             // 
-            // button_4
-            // 
-            button_4.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
-            button_4.Location = new Point(0, 80);
-            button_4.Name = "button_4";
-            button_4.Size = new Size(75, 75);
-            button_4.TabIndex = 1;
-            button_4.Text = "4";
-            button_4.UseVisualStyleBackColor = true;
-            // 
-            // button_7
-            // 
-            button_7.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
-            button_7.Location = new Point(0, 160);
-            button_7.Name = "button_7";
-            button_7.Size = new Size(75, 75);
-            button_7.TabIndex = 2;
-            button_7.Text = "7";
-            button_7.UseVisualStyleBackColor = true;
-            // 
             // button_2
             // 
             button_2.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
@@ -90,28 +70,6 @@
             button_2.Text = "2";
             button_2.UseVisualStyleBackColor = true;
             button_2.Click += button2_Click;
-            // 
-            // button_5
-            // 
-            button_5.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
-            button_5.Location = new Point(80, 80);
-            button_5.Name = "button_5";
-            button_5.Size = new Size(75, 75);
-            button_5.TabIndex = 4;
-            button_5.Text = "5";
-            button_5.UseVisualStyleBackColor = true;
-            button_5.Click += button5_Click;
-            // 
-            // button_8
-            // 
-            button_8.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
-            button_8.Location = new Point(80, 160);
-            button_8.Name = "button_8";
-            button_8.Size = new Size(75, 75);
-            button_8.TabIndex = 5;
-            button_8.Text = "8";
-            button_8.UseVisualStyleBackColor = true;
-            button_8.Click += button8_Click;
             // 
             // button_3
             // 
@@ -124,6 +82,28 @@
             button_3.UseVisualStyleBackColor = true;
             button_3.Click += button3_Click;
             // 
+            // button_4
+            // 
+            button_4.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
+            button_4.Location = new Point(0, 80);
+            button_4.Name = "button_4";
+            button_4.Size = new Size(75, 75);
+            button_4.TabIndex = 1;
+            button_4.Text = "4";
+            button_4.UseVisualStyleBackColor = true;
+            button_4.Click += button4_Click;
+            // 
+            // button_5
+            // 
+            button_5.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
+            button_5.Location = new Point(80, 80);
+            button_5.Name = "button_5";
+            button_5.Size = new Size(75, 75);
+            button_5.TabIndex = 4;
+            button_5.Text = "5";
+            button_5.UseVisualStyleBackColor = true;
+            button_5.Click += button5_Click;
+            // 
             // button_6
             // 
             button_6.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
@@ -134,6 +114,28 @@
             button_6.Text = "6";
             button_6.UseVisualStyleBackColor = true;
             button_6.Click += button6_Click;
+            // 
+            // button_7
+            // 
+            button_7.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
+            button_7.Location = new Point(0, 160);
+            button_7.Name = "button_7";
+            button_7.Size = new Size(75, 75);
+            button_7.TabIndex = 2;
+            button_7.Text = "7";
+            button_7.UseVisualStyleBackColor = true;
+            button_7.Click += button7_Click;
+            // 
+            // button_8
+            // 
+            button_8.Font = new Font("Agency FB", 20.25F, FontStyle.Bold);
+            button_8.Location = new Point(80, 160);
+            button_8.Name = "button_8";
+            button_8.Size = new Size(75, 75);
+            button_8.TabIndex = 5;
+            button_8.Text = "8";
+            button_8.UseVisualStyleBackColor = true;
+            button_8.Click += button8_Click;
             // 
             // button_9
             // 

@@ -203,5 +203,73 @@ namespace WinFormsApp1.Tests
             var expected1 = "-228";
             Assert.That(actual1, Is.EqualTo(expected1));
         }
+
+        [Test]
+        public void LastOperandContainsDecimal_Test_Works()
+        {
+            //Arrange
+            var testString1 = "12/3+98-5*66";
+            var testString2 = "12/3+98-5*66.";
+            var testString3 = "12/3+9.8-5*66";
+            var testString4 = "3242365.0";
+            var testString5 = "";
+            var testString6 = "543534534+";
+
+            //Act
+            var actual1 = Funcs.LastOperandContainsDecimal(testString1);
+            var actual2 = Funcs.LastOperandContainsDecimal(testString2);
+            var actual3 = Funcs.LastOperandContainsDecimal(testString3);
+            var actual4 = Funcs.LastOperandContainsDecimal(testString4);
+            var actual5 = Funcs.LastOperandContainsDecimal(testString5);
+            var actual6 = Funcs.LastOperandContainsDecimal(testString6);
+
+            //Assert
+            var expected1 = false;
+            var expected2 = true;
+            var expected3 = false;
+            var expected4 = true;
+            var expected5 = false;
+            var expected6 = false;
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+            Assert.That(actual4, Is.EqualTo(expected4));
+            Assert.That(actual5, Is.EqualTo(expected5));
+            Assert.That(actual6, Is.EqualTo(expected6));
+        }
+
+        [Test]
+        public void WhatToAdd_Test_Works()
+        {
+            //Arrange
+            var testString1 = "8745+88/";
+            var testString2 = "8745+88/2";
+            var testString3 = string.Empty;
+            var testString4 = "8745+88.";
+            var testString5 = "874.5+88";
+
+
+
+            //Act
+            var actual1 = Funcs.WhatToAdd(testString1);
+            var actual2 = Funcs.WhatToAdd(testString2);
+            var actual3 = Funcs.WhatToAdd(testString3);
+            var actual4 = Funcs.WhatToAdd(testString4);
+            var actual5 = Funcs.WhatToAdd(testString5);
+
+            //Assert
+            var expected1 = "0.";
+            var expected2 = ".";
+            var expected3 = "0.";
+            var expected4 = string.Empty;
+            var expected5 = ".";
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+            Assert.That(actual4, Is.EqualTo(expected4));
+            Assert.That(actual5, Is.EqualTo(expected5));
+        }
     }
 }

@@ -62,14 +62,8 @@ namespace WinFormsApp1
 
         private void buttonDecimal_Click(object sender, EventArgs e)
         {
-            //if(!(expressionText.Text.EndsWith('+')|| expressionText.Text.EndsWith('-') || expressionText.Text.EndsWith('/') || expressionText.Text.EndsWith('*') || expressionText.Text.EndsWith('.')))
-            //{
-            //    expressionText.Text += '.';
-            //}
-            //else if (expressionText.Text == string.Empty)
-            //{
-            //    expressionText.Text += "1.";
-            //}
+            var stringToAdd = Funcs.WhatToAdd(expression_label.Text);
+            expression_label.Text += stringToAdd;
         }
 
         private void buttonPlus_Click(object sender, EventArgs e)
@@ -132,10 +126,10 @@ namespace WinFormsApp1
             }
             else if (expression_label.Text == string.Empty)
             {
-                expression_label.Text += "0";
+                expression_label.Text += 0;
             }
             previous_expression_label.Text = expression_label.Text;
-            expression_label.Text = Funcs.ComputeExpression(expression_label.Text);
+            expression_label.Text = Funcs.ComputeExpression2(expression_label.Text);
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
