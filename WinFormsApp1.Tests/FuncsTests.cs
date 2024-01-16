@@ -189,5 +189,19 @@ namespace WinFormsApp1.Tests
             var expected1 = "-228";
             Assert.That(actual1, Is.EqualTo(expected1));
         }
+
+        [Test]
+        public void ComputeExpression2_Test_Works()
+        {
+            //Arrange
+            var testString1 = "12/3+98-5*66";
+
+            //Act
+            var actual1 = Funcs.ComputeExpression2(testString1);
+
+            //Assert
+            var expected1 = "-228";
+            Assert.That(actual1, Is.EqualTo(expected1));
+        }
     }
 }

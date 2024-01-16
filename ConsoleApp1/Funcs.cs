@@ -8,7 +8,80 @@ namespace ConsoleApp1
 {
     public static class Funcs
     {
-        public static double ComputeExpression(string str)
+        public static string ComputeExpression2(string str)// es varianti momivida azrad ro davweqi da ashkarad gacilebit sjobs :D
+        {
+            var separatorChars = new char[]
+            {
+                '+',
+                '-',
+                '*',
+                '/'
+            };
+            var operands = str.Split(separatorChars)
+                                .ToList();
+            var operators = str.Where(x => IsOperator(x))
+                                .ToList();
+            var posOfMultAndDiv = operators.Select((x, i) => new { Character = x, Index = i })
+                                            .Where(x => x.Character == '*' || x.Character == '/')
+                                            .Select(x => x.Index)
+                                            .ToList();
+
+            foreach (var op in posOfMultAndDiv)
+            {
+                var result = 0.0;
+                var firstOperandIndex = (operands[op] != string.Empty) ? op : op - 1;
+                var secondOperandIndex = op + 1;
+
+                if (operators[op] == '*')
+                {
+                    result = double.Parse(operands[firstOperandIndex]) * double.Parse(operands[secondOperandIndex]);
+                }
+                else
+                {
+                    result = double.Parse(operands[firstOperandIndex]) / double.Parse(operands[secondOperandIndex]);
+                }
+
+                operands[firstOperandIndex] = result.ToString();
+                operands[secondOperandIndex] = string.Empty;
+                operators[op] = default;
+            }
+
+            operands.RemoveAll(x => x.Equals(string.Empty));
+            operators.RemoveAll(x => x.Equals(default));
+            var posOfPlusAndMinus = operators.Select((x, i) => new { Character = x, Index = i })
+                                            .Where(x => x.Character == '+' || x.Character == '-')
+                                            .Select(x => x.Index)
+                                            .ToList();
+            foreach (var op in posOfPlusAndMinus)
+            {
+                var result = 0.0;
+                var firstOperandIndex = (operands[op] != string.Empty) ? op : op - 1;
+                var secondOperandIndex = op + 1;
+
+                if (operators[op] == '+')
+                {
+                    result = double.Parse(operands[firstOperandIndex]) + double.Parse(operands[secondOperandIndex]);
+                }
+                else
+                {
+                    result = double.Parse(operands[firstOperandIndex]) - double.Parse(operands[secondOperandIndex]);
+                }
+
+                operands[firstOperandIndex] = result.ToString();
+                operands[secondOperandIndex] = string.Empty;
+                operators[op] = default;
+            }
+
+            operands.RemoveAll(x => x.Equals(string.Empty));
+            operators.RemoveAll(x => x.Equals(default));
+
+            return operands[0];
+        }
+        public static bool IsOperator(char el)
+        {
+            return el == '+' || el == '-' || el == '*' || el == '/';
+        }
+        public static string ComputeExpression(string str)
         {
             var tempStr = new StringBuilder(str);
             var MultDivides = PosOfMultDiv(tempStr);
@@ -43,8 +116,9 @@ namespace ConsoleApp1
                     ChangeOpWithResult(ref tempStr, res, op);
                 }
             }
-            return double.Parse(tempStr.ToString());
+            return double.Parse(tempStr.ToString()).ToString();
         }
+
 
         public static List<int> PosOfMinPlus(StringBuilder str)
         {
@@ -84,7 +158,7 @@ namespace ConsoleApp1
                 .ToArray();
             return double.Parse(new string(result));
         }
-        
+
         public static double NumberAfterOperator(StringBuilder str, int opIndex)
         {
             var temp = new StringBuilder();
@@ -117,7 +191,7 @@ namespace ConsoleApp1
                     break;
                 ++i;
             }
-            
+
             var endingIndex = opIndex + --i;
 
             while (true)

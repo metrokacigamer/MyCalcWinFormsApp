@@ -44,8 +44,9 @@
             button_minus = new Button();
             button_multiply = new Button();
             button_divide = new Button();
-            expressionText = new TextBox();
             button_decimal = new Button();
+            expression_label = new Label();
+            previous_expression_label = new Label();
             SuspendLayout();
             // 
             // button_1
@@ -222,14 +223,6 @@
             button_divide.UseVisualStyleBackColor = true;
             button_divide.Click += buttonDivide_Click;
             // 
-            // expressionText
-            // 
-            expressionText.Location = new Point(256, 21);
-            expressionText.Multiline = true;
-            expressionText.Name = "expressionText";
-            expressionText.Size = new Size(120, 75);
-            expressionText.TabIndex = 16;
-            // 
             // button_decimal
             // 
             button_decimal.Font = new Font("Stencil", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -241,13 +234,31 @@
             button_decimal.UseVisualStyleBackColor = true;
             button_decimal.Click += buttonDecimal_Click;
             // 
+            // expression_label
+            // 
+            expression_label.AutoSize = true;
+            expression_label.Font = new Font("ISOCP_IV25", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            expression_label.Location = new Point(256, 50);
+            expression_label.Name = "expression_label";
+            expression_label.Size = new Size(0, 25);
+            expression_label.TabIndex = 19;
+            // 
+            // previous_expression_label
+            // 
+            previous_expression_label.AutoSize = true;
+            previous_expression_label.Location = new Point(256, 25);
+            previous_expression_label.Name = "previous_expression_label";
+            previous_expression_label.Size = new Size(0, 15);
+            previous_expression_label.TabIndex = 20;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(377, 321);
+            Controls.Add(previous_expression_label);
+            Controls.Add(expression_label);
             Controls.Add(button_decimal);
-            Controls.Add(expressionText);
             Controls.Add(button_divide);
             Controls.Add(button_multiply);
             Controls.Add(button_minus);
@@ -265,7 +276,7 @@
             Controls.Add(button_9);
             Controls.Add(button_0);
             Name = "Form1";
-            Text = "Form1";
+            Text = "MyCalc";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -288,7 +299,8 @@
         private Button button_minus;
         private Button button_multiply;
         private Button button_divide;
-        private TextBox expressionText;
         private Button button_decimal;
+        private Label expression_label;
+        private Label previous_expression_label;
     }
 }
