@@ -75,19 +75,21 @@ namespace WinFormsApp1
             }
             else if (expression_label.Text == string.Empty)
             {
-                expression_label.Text += "1+";
+                expression_label.Text += "0+";
             }
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
+            var lastIsOperator = Funcs.IsOperator(expression_label.Text.Last());
+            var preLastIsNotOperator = !(Funcs.IsOperator(expression_label.Text.Reverse().ToArray()[1]));
+            if (lastIsOperator && preLastIsNotOperator)
             {
                 expression_label.Text += '-';
             }
-            else if (expression_label.Text == string.Empty)
+            else if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.'))
             {
-                expression_label.Text += "1-";
+                expression_label.Text += "0-";
             }
         }
 
@@ -99,7 +101,7 @@ namespace WinFormsApp1
             }
             else if (expression_label.Text == string.Empty)
             {
-                expression_label.Text += "1*";
+                expression_label.Text += "0*";
             }
         }
 
@@ -111,7 +113,7 @@ namespace WinFormsApp1
             }
             else if (expression_label.Text == string.Empty)
             {
-                expression_label.Text += "1/";
+                expression_label.Text += "0/";
             }
         }
 
