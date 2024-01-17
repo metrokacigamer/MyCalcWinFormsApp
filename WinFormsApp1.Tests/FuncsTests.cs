@@ -9,6 +9,7 @@ namespace WinFormsApp1.Tests
 {
     public class FuncsTests
     {
+        Funcs Funcs = new Funcs();
         [Test]
         public void PosOfMinPlus_Test_Works()
         {
@@ -191,17 +192,24 @@ namespace WinFormsApp1.Tests
         }
 
         [Test]
-        public void ComputeExpression2_Test_Works()
+        public void ComputeOperators_Test_Works()
         {
             //Arrange
             var testString1 = "12/3+98-5*66";
-
+            var testString2 = "78412+87454124/500-21321-54654";
+            var testString3 = "-12/-3+-98--5*-66";
+            
             //Act
-            var actual1 = Funcs.ComputeExpression2(testString1);
+            var actual1 = Funcs.ComputeOperators(testString1);
+            var actual2 = Funcs.ComputeOperators(testString2);
 
             //Assert
             var expected1 = "-228";
+            var expected2 = "177345.248";
+            var expected3 = "-424";
+
             Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
         }
 
         [Test]
@@ -270,6 +278,171 @@ namespace WinFormsApp1.Tests
             Assert.That(actual3, Is.EqualTo(expected3));
             Assert.That(actual4, Is.EqualTo(expected4));
             Assert.That(actual5, Is.EqualTo(expected5));
+        }
+
+        [Test]
+        public void ExpressionList_CheckingExpressions_ReturnsExpressionsCorrectly()
+        {
+            //Arrange
+            var testString1 = "78412*(87454124)+445212/(21321)";
+            var testString2 = "78412+(87454124)/445212-(21321)-54654";
+            var testString3 = "7841244521221321";
+            var testString4 = "(234654)/(342)*(112)*(3)-()";
+            var testString5 = "((23423)*(((32)/2)-(23)))";
+            var testString6 = "(23423)+((32)/2)/(23)";
+
+
+            //Act
+            var actual1 = Funcs.ExpressionOpList(testString1).Item1;
+            var actual2 = Funcs.ExpressionOpList(testString2).Item1;
+            var actual3 = Funcs.ExpressionOpList(testString3).Item1;
+            var actual4 = Funcs.ExpressionOpList(testString4).Item1;
+            var actual5 = Funcs.ExpressionOpList(testString5).Item1;
+            var actual6 = Funcs.ExpressionOpList(testString6).Item1;
+
+
+            //Assert
+            var expected1 = new List<string>()
+            {
+                "78412",
+                "(87454124)",
+                "445212",
+                "(21321)"
+            };
+            var expected2 = new List<string>()
+            {
+                "78412",
+                "(87454124)",
+                "445212",
+                "(21321)",
+                "54654"
+            };
+            var expected3 = new List<string>()
+            {
+                "7841244521221321"
+            };
+            var expected4 = new List<string>()
+            {
+                "(234654)",
+                "(342)",
+                "(112)",
+                "(3)",
+                "()"
+            };
+            var expected5 = new List<string>()
+            {
+                "((23423)*(((32)/2)-(23)))"
+            };
+            var expected6 = new List<string>()
+            {
+                "(23423)",
+                "((32)/2)",
+                "(23)"
+            };
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+            Assert.That(actual4, Is.EqualTo(expected4));
+            Assert.That(actual5, Is.EqualTo(expected5));
+            Assert.That(actual6, Is.EqualTo(expected6));
+        }
+
+        [Test]
+        public void ExpressionList_CheckingOperators_ReturnsOperatorsCorrectly()
+        {
+            //Arrange
+            var testString1 = "78412*(87454124)+445212/(21321)";
+            var testString2 = "78412+(87454124)/445212-(21321)-54654";
+            var testString3 = "7841244521221321";
+            var testString4 = "(234654)/(342)*(112)*(3)-()";
+            var testString5 = "((23423)*(((32)/2)-(23)))";
+            var testString6 = "(23423)+((32)/2)/(23)";
+
+
+            //Act
+            var actual1 = Funcs.ExpressionOpList(testString1).Item2;
+            var actual2 = Funcs.ExpressionOpList(testString2).Item2;
+            var actual3 = Funcs.ExpressionOpList(testString3).Item2;
+            var actual4 = Funcs.ExpressionOpList(testString4).Item2;
+            var actual5 = Funcs.ExpressionOpList(testString5).Item2;
+            var actual6 = Funcs.ExpressionOpList(testString6).Item2;
+
+
+            //Assert
+            var expected1 = new List<char>()
+            {
+                '*',
+                '+',
+                '/'
+            };
+            var expected2 = new List<char>()
+            {
+                '+',
+                '/',
+                '-',
+                '-'
+            };
+            var expected3 = new List<char>()
+            {
+            };
+            var expected4 = new List<char>()
+            {
+                '/',
+                '*',
+                '*',
+                '-'
+            };
+            var expected5 = new List<char>()
+            {
+            };
+            var expected6 = new List<char>()//"(23423)+((32)/2)/(23)";
+            {
+                '+',
+                '/'
+            };
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+            Assert.That(actual4, Is.EqualTo(expected4));
+            Assert.That(actual5, Is.EqualTo(expected5));
+            Assert.That(actual6, Is.EqualTo(expected6));
+        }
+
+        [Test]
+        public void ComputeExpression2_Tests_Work()
+        {
+            //Arrange
+            var testString1 = "78412*(874.3)+445212/(2.5)";
+            var testString2 = "78412+(87454124)/500-(21321)-54654";
+            var testString3 = "7841244";
+            var testString4 = "(234654)/(350)*(112)*(3)-()";
+            var testString5 = "(23423)+((32)/2)/(20)";
+            var testString6 = "((23423)*(((32)/2)-(23)))";
+
+            //Act
+            var actual1 = Funcs.ComputeExpression2(testString1);
+            var actual2 = Funcs.ComputeExpression2(testString2);
+            var actual3 = Funcs.ComputeExpression2(testString3);
+            var actual4 = Funcs.ComputeExpression2(testString4);
+            var actual5 = Funcs.ComputeExpression2(testString5);
+            var actual6 = Funcs.ComputeExpression2(testString6);
+
+            //Assert
+            var expected1 = "68733696.39999999";
+            var expected2 = "177345.248";
+            var expected3 = "7841244"; 
+            var expected4 = "225267.84";
+            var expected5 = "23423.8";
+            var expected6 = "-163961";
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
+            Assert.That(actual4, Is.EqualTo(expected4));
+            Assert.That(actual5, Is.EqualTo(expected5));
+            Assert.That(actual6, Is.EqualTo(expected6));
         }
     }
 }

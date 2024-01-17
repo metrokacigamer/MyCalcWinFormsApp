@@ -5,6 +5,7 @@ namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
+        Funcs Funcs = new Funcs();
         public Form1()
         {
             InitializeComponent();
@@ -136,6 +137,18 @@ namespace WinFormsApp1
         {
             previous_expression_label.Text = string.Empty;
             expression_label.Text = string.Empty;
+        }
+
+        private void button_parenthesis_1_Click(object sender, EventArgs e)
+        {
+            var whatToAdd = Funcs.AddParenthesis_1(expression_label.Text);
+            expression_label.Text += whatToAdd;
+        }
+
+        private void button_parenthesis_2_Click(object sender, EventArgs e)
+        {
+            var whatToAdd = Funcs.AddParenthesis_2(expression_label.Text);
+            expression_label.Text += whatToAdd;
         }
     }
 }

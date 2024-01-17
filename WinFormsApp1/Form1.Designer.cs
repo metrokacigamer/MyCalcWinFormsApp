@@ -47,6 +47,8 @@
             button_decimal = new Button();
             expression_label = new Label();
             previous_expression_label = new Label();
+            button_parenthesis_1 = new Button();
+            button_parenthesis_2 = new Button();
             SuspendLayout();
             // 
             // button_1
@@ -195,9 +197,9 @@
             // button_minus
             // 
             button_minus.Font = new Font("Segoe UI", 13F);
-            button_minus.Location = new Point(294, 160);
+            button_minus.Location = new Point(295, 160);
             button_minus.Name = "button_minus";
-            button_minus.Size = new Size(37, 36);
+            button_minus.Size = new Size(36, 36);
             button_minus.TabIndex = 13;
             button_minus.Text = "-";
             button_minus.UseVisualStyleBackColor = true;
@@ -206,9 +208,9 @@
             // button_multiply
             // 
             button_multiply.Font = new Font("Segoe UI", 13F);
-            button_multiply.Location = new Point(256, 202);
+            button_multiply.Location = new Point(256, 199);
             button_multiply.Name = "button_multiply";
-            button_multiply.Size = new Size(36, 33);
+            button_multiply.Size = new Size(36, 36);
             button_multiply.TabIndex = 14;
             button_multiply.Text = "*";
             button_multiply.UseVisualStyleBackColor = true;
@@ -217,9 +219,9 @@
             // button_divide
             // 
             button_divide.Font = new Font("Segoe UI", 13F);
-            button_divide.Location = new Point(294, 202);
+            button_divide.Location = new Point(295, 199);
             button_divide.Name = "button_divide";
-            button_divide.Size = new Size(37, 33);
+            button_divide.Size = new Size(36, 36);
             button_divide.TabIndex = 15;
             button_divide.Text = "/";
             button_divide.UseVisualStyleBackColor = true;
@@ -253,11 +255,35 @@
             previous_expression_label.Size = new Size(0, 15);
             previous_expression_label.TabIndex = 20;
             // 
+            // button_parenthesis_1
+            // 
+            button_parenthesis_1.Font = new Font("Segoe UI", 13F);
+            button_parenthesis_1.Location = new Point(256, 119);
+            button_parenthesis_1.Name = "button_parenthesis_1";
+            button_parenthesis_1.Size = new Size(36, 36);
+            button_parenthesis_1.TabIndex = 21;
+            button_parenthesis_1.Text = "(";
+            button_parenthesis_1.UseVisualStyleBackColor = true;
+            button_parenthesis_1.Click += button_parenthesis_1_Click;
+            // 
+            // button_parenthesis_2
+            // 
+            button_parenthesis_2.Font = new Font("Segoe UI", 13F);
+            button_parenthesis_2.Location = new Point(295, 119);
+            button_parenthesis_2.Name = "button_parenthesis_2";
+            button_parenthesis_2.Size = new Size(36, 36);
+            button_parenthesis_2.TabIndex = 22;
+            button_parenthesis_2.Text = ")";
+            button_parenthesis_2.UseVisualStyleBackColor = true;
+            button_parenthesis_2.Click += button_parenthesis_2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(377, 321);
+            Controls.Add(button_parenthesis_2);
+            Controls.Add(button_parenthesis_1);
             Controls.Add(previous_expression_label);
             Controls.Add(expression_label);
             Controls.Add(button_decimal);
@@ -304,5 +330,7 @@
         private Button button_decimal;
         private Label expression_label;
         private Label previous_expression_label;
+        private Button button_parenthesis_1;
+        private Button button_parenthesis_2;
     }
 }

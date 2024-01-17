@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    public static class Funcs
+    public class Funcs
     {
-        public static string ComputeExpression2(string str)// es varianti momivida azrad ro davweqi da ashkarad gacilebit sjobs :D
+        //v2.1
+        public string ComputeOperators(string str) // es varianti momivida azrad ro davweqi da ashkarad gacilebit sjobs :D
         {
+            if (str == string.Empty)
+            {
+                return "0";
+            }
+
             var separatorChars = new char[]
             {
                 '+',
@@ -20,8 +26,40 @@ namespace ConsoleApp1
             };
             var operands = str.Split(separatorChars)
                                 .ToList();
-            var operators = str.Where(x => IsOperator(x))
-                                .ToList();
+            operands.RemoveAll(x => x == string.Empty);
+            var operatorsIndexes = str.Select((x, i) => new { Character = x, Index = i })
+                                        .Where(x => IsOperator(x.Character))
+                                        .ToList();
+            if (!operatorsIndexes.Any())
+            {
+                return str;
+            }
+            if (operatorsIndexes.Count >= operatorsIndexes.Count)
+            {
+                if (operatorsIndexes[0].Index == 0)
+                {
+                    operatorsIndexes.RemoveAt(0);
+                    operands[0] = new string(operands[0].Prepend('-')
+                                                        .ToArray());
+                }
+                var indexesToRemove = new List<int>();
+                var operandsCount = 0;
+                for (var x = 0; x < operatorsIndexes.Count;)// in minuses)
+                {
+                    if (IsOperator(str[operatorsIndexes[x].Index - 1]))
+                    {
+                        operands[operandsCount + 1] = new string(operands[operandsCount + 1].Prepend('-')
+                                    .ToArray());
+                        //indexesToRemove.Add(operatorsIndexes[x].Index);
+                        operatorsIndexes.RemoveAt(x);
+                        ++operandsCount;
+                    }
+                    else
+                        ++x;
+                }
+            }
+            var operators = operatorsIndexes.Select(x => x.Character)
+                                            .ToList();
             var posOfMultAndDiv = operators.Select((x, i) => new { Character = x, Index = i })
                                             .Where(x => x.Character == '*' || x.Character == '/')
                                             .Select(x => x.Index)
@@ -30,7 +68,7 @@ namespace ConsoleApp1
             foreach (var op in posOfMultAndDiv)
             {
                 var result = 0.0;
-                var firstOperandIndex = (operands[op] != string.Empty) ? op : op - 1;
+                var firstOperandIndex = op;
                 var secondOperandIndex = op + 1;
 
                 if (operators[op] == '*')
@@ -41,22 +79,19 @@ namespace ConsoleApp1
                 {
                     result = double.Parse(operands[firstOperandIndex]) / double.Parse(operands[secondOperandIndex]);
                 }
-
-                operands[firstOperandIndex] = result.ToString();
-                operands[secondOperandIndex] = string.Empty;
+                var stringRes = result.ToString();
+                operands[firstOperandIndex] = string.Empty;
+                operands[secondOperandIndex] = stringRes;
                 operators[op] = default;
             }
 
             operands.RemoveAll(x => x.Equals(string.Empty));
             operators.RemoveAll(x => x.Equals(default));
-            var posOfPlusAndMinus = operators.Select((x, i) => new { Character = x, Index = i })
-                                            .Where(x => x.Character == '+' || x.Character == '-')
-                                            .Select(x => x.Index)
-                                            .ToList();
-            foreach (var op in posOfPlusAndMinus)
+
+            for (int op = 0; op < operators.Count; ++op)
             {
                 var result = 0.0;
-                var firstOperandIndex = (operands[op] != string.Empty) ? op : op - 1;
+                var firstOperandIndex = op;
                 var secondOperandIndex = op + 1;
 
                 if (operators[op] == '+')
@@ -68,20 +103,103 @@ namespace ConsoleApp1
                     result = double.Parse(operands[firstOperandIndex]) - double.Parse(operands[secondOperandIndex]);
                 }
 
-                operands[firstOperandIndex] = result.ToString();
-                operands[secondOperandIndex] = string.Empty;
-                operators[op] = default;
+                var stringRes = result.ToString();
+                operands[firstOperandIndex] = string.Empty;
+                operands[secondOperandIndex] = stringRes;
             }
 
             operands.RemoveAll(x => x.Equals(string.Empty));
-            operators.RemoveAll(x => x.Equals(default));
 
             var res = operands[0];
             var lastResult = StringToReturn(res);
             return lastResult;
         }
 
-        private static string StringToReturn(string res)
+        public string ComputeExpression2(string str)
+        {
+            var endIndex = str.LastIndexOf(')');
+            if (endIndex == -1)
+            {
+                return ComputeOperators(str);
+            }
+            else if ((endIndex == str.Length - 1) && (FindAMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
+            {
+                return ComputeExpression2(str.Substring(1, str.Length - 2));
+            }
+            var expressionList = ExpressionOpList(str).Item1;
+            var operatorList = ExpressionOpList(str).Item2;
+
+            for (var i = 0; i < expressionList.Count; ++i)
+            {
+                expressionList[i] = ComputeExpression2(expressionList[i]);
+            }
+            var joinedExpressionList = new string(string.Empty);
+
+            for (var i = 0; i < expressionList.Count - 1; ++i)
+            {
+                expressionList[i] += operatorList[i];
+                joinedExpressionList += expressionList[i];
+            }
+            joinedExpressionList += expressionList.Last();
+            var lastResult = ComputeOperators(joinedExpressionList);
+            return lastResult;
+        }
+
+        public void SpecialCheckForNegatives(string str)
+        {
+
+        }
+
+        public (List<string>, List<char>) ExpressionOpList(string str)
+        {
+            var result = new List<string>();
+            var ops = new List<char>();
+
+            var tempStr = str;
+            var endIndex = 0;
+            var startIndex = 0;
+            while (!tempStr.Equals(string.Empty))
+            {
+                endIndex = tempStr.LastIndexOf(')');
+                startIndex = FindAMatchingParenthesis(tempStr.Substring(0, Math.Abs(endIndex)));
+                if (tempStr.Substring(endIndex + 1) != string.Empty)
+                {
+                    result.Add(tempStr.Substring(endIndex + 1));
+                    tempStr = tempStr.Substring(0, endIndex + 1);
+                }
+                else
+                {
+                    result.Add(tempStr.Substring(startIndex, endIndex + 1 - startIndex));
+                    tempStr = tempStr.Substring(0, startIndex);
+                }
+            }
+            result.Reverse();
+            for (var i = 0; i < result.Count; ++i)
+            {
+                if (IsOperator(result[i].First()))
+                {
+                    ops.Add(result[i].First());
+                    result[i] = result[i].Remove(0, 1);
+                    if (result[i] == string.Empty)
+                    {
+                        result.Remove("");
+                    }
+                }
+
+                if (IsOperator(result[i].Last()))
+                {
+                    ops.Add(result[i].Last());
+                    result[i] = result[i].Remove(result[i].Length - 1, 1);
+                    if (result[i] == string.Empty)
+                    {
+                        result.Remove("");
+                    }
+                }
+            }
+            return (result, ops);
+        }
+
+        public string StringToReturn(string res)
         {
             var index = 0;
             if (LastOperandContainsDecimal(res))
@@ -100,15 +218,33 @@ namespace ConsoleApp1
                 return res;
         }
 
-        public static bool IsOperator(char el)
+        public string WhatToAdd(string text)
+        {
+            if (LastOperandContainsDecimal(text))
+            {
+                return string.Empty;
+            }
+            else if (text == string.Empty || IsOperator(text.Last()))
+            {
+                return "0.";
+            }
+            else
+            {
+                return ".";
+            }
+        }
+
+        public bool IsOperator(char el)
         {
             return el == '+' || el == '-' || el == '*' || el == '/';
         }
 
-        public static bool LastOperandContainsDecimal(string expr)
+        public bool LastOperandContainsDecimal(string expr)
         {
             if (!expr.Contains('.'))
+            {
                 return false;
+            }
             var anonVar = expr.Select((x, i) => new { Character = x, Index = i })
                             .LastOrDefault(x => IsOperator(x.Character));
             var index = (anonVar == default) ? 0 : anonVar.Index;
@@ -122,6 +258,8 @@ namespace ConsoleApp1
                 return false;
             }
         }
+
+        //v1.0
 
         public static string ComputeExpression(string str)
         {
@@ -160,7 +298,6 @@ namespace ConsoleApp1
             }
             return double.Parse(tempStr.ToString()).ToString();
         }
-
 
         public static List<int> PosOfMinPlus(StringBuilder str)
         {
@@ -219,7 +356,6 @@ namespace ConsoleApp1
             return double.Parse(result);
         }
 
-
         public static void ChangeOpWithResult(ref StringBuilder str, double result, int opIndex)
         {
             var i = 1;
@@ -257,20 +393,64 @@ namespace ConsoleApp1
             str = new StringBuilder(newStr);
         }
 
-        public static string WhatToAdd(string text)
+        public string AddParenthesis_1(string text)
         {
-            if (Funcs.LastOperandContainsDecimal(text))
+            if (text == string.Empty || IsOperator(text.Last()) || text.Last() == '(')
             {
-                return string.Empty;
-            }
-            else if (text == string.Empty || Funcs.IsOperator(text.Last()))
-            {
-                return "0.";
+                return "(";
             }
             else
             {
-                return ".";
+                return "*(";
             }
+        }
+
+        public string AddParenthesis_2(string text)
+        {
+            if (HasAMatchingParenthesis_1(text, out _) || !IsOperator(text.Last()))
+            {
+                return ")";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public bool HasAMatchingParenthesis_1(string text, out int index)
+        {
+            index = default;
+            if (text.Count(x => x == '(') > text.Count(x => x == ')'))
+            {
+                index = FindAMatchingParenthesis(text);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public int FindAMatchingParenthesis(string text)
+        {
+            if (!text.Contains('('))
+            {
+                return 0;
+            }
+
+            var i = 0;
+            for (var count = 1; count != 0; ++i)
+            {
+                if (text[text.Length - i - 1] == '(')
+                {
+                    --count;
+                }
+                else if (text[text.Length - i - 1] == ')')
+                {
+                    ++count;
+                }
+            }
+            return text.Length - i;
         }
     }
 }

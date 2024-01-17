@@ -7,16 +7,11 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var string1 = "848.87841548949421";
-            var index1 = string1.Select((x, i) => new { Character = x, Index = i })
-                                .LastOrDefault(x => x.Character == '.')
-                                .Index;
-            var string2 = "9987.234";
-            var index2 = string2.Select((x, i) => new { Character = x, Index = i })
-                    .LastOrDefault(x => x.Character == '.')
-                    .Index;
-            Console.WriteLine(string1.Substring(0, index1 + 9));
-            Console.WriteLine(string2.Substring(0, index2 + 9));
+            var var1 = double.Parse("231999.248");
+            var str = "123456";
+            str = new string(str.Prepend('-').ToArray());
+            Console.WriteLine(str);
+
         }
     }
 }
