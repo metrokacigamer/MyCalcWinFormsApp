@@ -202,6 +202,7 @@ namespace WinFormsApp1.Tests
             //Act
             var actual1 = Funcs.ComputeOperators(testString1);
             var actual2 = Funcs.ComputeOperators(testString2);
+            var actual3 = Funcs.ComputeOperators(testString3);
 
             //Assert
             var expected1 = "-228";
@@ -210,6 +211,7 @@ namespace WinFormsApp1.Tests
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
+            Assert.That(actual3, Is.EqualTo(expected3));
         }
 
         [Test]
@@ -422,12 +424,12 @@ namespace WinFormsApp1.Tests
             var testString6 = "((23423)*(((32)/2)-(23)))";
 
             //Act
-            var actual1 = Funcs.ComputeExpression2(testString1);
-            var actual2 = Funcs.ComputeExpression2(testString2);
-            var actual3 = Funcs.ComputeExpression2(testString3);
-            var actual4 = Funcs.ComputeExpression2(testString4);
-            var actual5 = Funcs.ComputeExpression2(testString5);
-            var actual6 = Funcs.ComputeExpression2(testString6);
+            var actual1 = Funcs.ComputeExpressionV2_1(testString1);
+            var actual2 = Funcs.ComputeExpressionV2_1(testString2);
+            var actual3 = Funcs.ComputeExpressionV2_1(testString3);
+            var actual4 = Funcs.ComputeExpressionV2_1(testString4);
+            var actual5 = Funcs.ComputeExpressionV2_1(testString5);
+            var actual6 = Funcs.ComputeExpressionV2_1(testString6);
 
             //Assert
             var expected1 = "68733696.39999999";

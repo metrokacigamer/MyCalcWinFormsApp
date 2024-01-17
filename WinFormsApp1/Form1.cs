@@ -132,7 +132,7 @@ namespace WinFormsApp1
                 expression_label.Text += 0;
             }
             previous_expression_label.Text = expression_label.Text;
-            expression_label.Text = Funcs.ComputeExpression2(expression_label.Text);
+            expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
         }
 
         private void buttonClear_Click(object sender, EventArgs e)

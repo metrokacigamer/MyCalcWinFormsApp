@@ -16,7 +16,103 @@ namespace ConsoleApp1
             {
                 return "0";
             }
+            else if (!str.Any(x => IsOperator(x)))
+            {
+                return str;
+            }
 
+            var operands = GenerateOperandsList(str);
+            var operatorsIndexes = GenerateOperatorsAndIndexesList(str);
+
+            SpecialCheckAndActForNegatives(ref str, ref operands, ref operatorsIndexes);
+
+            var operators = operatorsIndexes.Select(x => x.character)
+                                            .ToList();
+            var posOfMultAndDiv = operators.Select((x, i) => new { Character = x, Index = i })
+                                            .Where(x => x.Character == '*' || x.Character == '/')
+                                            .Select(x => x.Index)
+                                            .ToList();
+            
+            MultiplicationsAndDivisions(posOfMultAndDiv, ref operators, ref operands);
+            AdditionsAndSubtractions(ref operators, ref operands);
+            
+            var res = operands[0];
+            var lastResult = StringToReturn(res);
+            return lastResult;
+        }
+
+        private void AdditionsAndSubtractions(ref List<char> operators, ref List<string> operands)
+        {
+            for (int op = 0; op < operators.Count; ++op)
+            {
+                var result = string.Empty;
+                var firstOperandIndex = op;
+                var secondOperandIndex = op + 1;
+
+                if (operators[op] == '+')
+                {
+                    result = Addition(operands[firstOperandIndex], operands[secondOperandIndex]);
+                }
+                else
+                {
+                    result = Subtraction(operands[firstOperandIndex], operands[secondOperandIndex]);
+                }
+                operands[firstOperandIndex] = string.Empty;
+                operands[secondOperandIndex] = result;
+            }
+            operands.RemoveAll(x => x.Equals(string.Empty));
+        }
+
+        private void MultiplicationsAndDivisions(List<int> posOfMultAndDiv, ref List<char> operators, ref List<string> operands)
+        {
+            foreach (var op in posOfMultAndDiv)
+            {
+                var result = string.Empty;
+                var firstOperandIndex = op;
+                var secondOperandIndex = op + 1;
+
+                if (operators[op] == '*')
+                {
+                    result = Multiplication(operands[firstOperandIndex], operands[secondOperandIndex]);
+                }
+                else
+                {
+                    result = Division(operands[firstOperandIndex], operands[secondOperandIndex]);
+                }
+                operands[firstOperandIndex] = string.Empty;
+                operands[secondOperandIndex] = result;
+                operators[op] = default;
+            }
+            operands.RemoveAll(x => x.Equals(string.Empty));
+            operators.RemoveAll(x => x.Equals(default));
+        }
+
+        public string Subtraction(string v1, string v2)
+        {
+            var result = (double.Parse(v1) - double.Parse(v2)).ToString();
+            return result;
+        }
+
+        public string Addition(string v1, string v2)
+        {
+            var result = (double.Parse(v1) + double.Parse(v2)).ToString();
+            return result;
+        }
+
+        public string Division(string v1, string v2)
+        {
+            var result = (double.Parse(v1) / double.Parse(v2)).ToString();
+            return result;
+        }
+
+        public string Multiplication(string v1, string v2)
+        {
+            var result = (double.Parse(v1) * double.Parse(v2)).ToString();
+            return result;
+        }
+
+        public List<string> GenerateOperandsList(string str)
+        {
             var separatorChars = new char[]
             {
                 '+',
@@ -27,95 +123,18 @@ namespace ConsoleApp1
             var operands = str.Split(separatorChars)
                                 .ToList();
             operands.RemoveAll(x => x == string.Empty);
-            var operatorsIndexes = str.Select((x, i) => new { Character = x, Index = i })
-                                        .Where(x => IsOperator(x.Character))
-                                        .ToList();
-            if (!operatorsIndexes.Any())
-            {
-                return str;
-            }
-            if (operatorsIndexes.Count >= operatorsIndexes.Count)
-            {
-                if (operatorsIndexes[0].Index == 0)
-                {
-                    operatorsIndexes.RemoveAt(0);
-                    operands[0] = new string(operands[0].Prepend('-')
-                                                        .ToArray());
-                }
-                var indexesToRemove = new List<int>();
-                var operandsCount = 0;
-                for (var x = 0; x < operatorsIndexes.Count;)// in minuses)
-                {
-                    if (IsOperator(str[operatorsIndexes[x].Index - 1]))
-                    {
-                        operands[operandsCount + 1] = new string(operands[operandsCount + 1].Prepend('-')
-                                    .ToArray());
-                        //indexesToRemove.Add(operatorsIndexes[x].Index);
-                        operatorsIndexes.RemoveAt(x);
-                        ++operandsCount;
-                    }
-                    else
-                        ++x;
-                }
-            }
-            var operators = operatorsIndexes.Select(x => x.Character)
-                                            .ToList();
-            var posOfMultAndDiv = operators.Select((x, i) => new { Character = x, Index = i })
-                                            .Where(x => x.Character == '*' || x.Character == '/')
-                                            .Select(x => x.Index)
-                                            .ToList();
-
-            foreach (var op in posOfMultAndDiv)
-            {
-                var result = 0.0;
-                var firstOperandIndex = op;
-                var secondOperandIndex = op + 1;
-
-                if (operators[op] == '*')
-                {
-                    result = double.Parse(operands[firstOperandIndex]) * double.Parse(operands[secondOperandIndex]);
-                }
-                else
-                {
-                    result = double.Parse(operands[firstOperandIndex]) / double.Parse(operands[secondOperandIndex]);
-                }
-                var stringRes = result.ToString();
-                operands[firstOperandIndex] = string.Empty;
-                operands[secondOperandIndex] = stringRes;
-                operators[op] = default;
-            }
-
-            operands.RemoveAll(x => x.Equals(string.Empty));
-            operators.RemoveAll(x => x.Equals(default));
-
-            for (int op = 0; op < operators.Count; ++op)
-            {
-                var result = 0.0;
-                var firstOperandIndex = op;
-                var secondOperandIndex = op + 1;
-
-                if (operators[op] == '+')
-                {
-                    result = double.Parse(operands[firstOperandIndex]) + double.Parse(operands[secondOperandIndex]);
-                }
-                else
-                {
-                    result = double.Parse(operands[firstOperandIndex]) - double.Parse(operands[secondOperandIndex]);
-                }
-
-                var stringRes = result.ToString();
-                operands[firstOperandIndex] = string.Empty;
-                operands[secondOperandIndex] = stringRes;
-            }
-
-            operands.RemoveAll(x => x.Equals(string.Empty));
-
-            var res = operands[0];
-            var lastResult = StringToReturn(res);
-            return lastResult;
+            return operands;
         }
 
-        public string ComputeExpression2(string str)
+        private List<(char character, int index)> GenerateOperatorsAndIndexesList(string str)
+        {
+            var result = str.Select((character, index) => (character, index))
+                            .Where(x => IsOperator(x.character))
+                            .ToList();
+            return result;
+        }
+
+        public string ComputeExpressionV2_1(string str)
         {
             var endIndex = str.LastIndexOf(')');
             if (endIndex == -1)
@@ -124,14 +143,16 @@ namespace ConsoleApp1
             }
             else if ((endIndex == str.Length - 1) && (FindAMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
             {
-                return ComputeExpression2(str.Substring(1, str.Length - 2));
+                return ComputeExpressionV2_1(str.Substring(1, str.Length - 2));
             }
-            var expressionList = ExpressionOpList(str).Item1;
-            var operatorList = ExpressionOpList(str).Item2;
+
+            var callExpressionOpList = ExpressionOpList(str);
+            var expressionList = callExpressionOpList.Item1;
+            var operatorList = callExpressionOpList.Item2;
 
             for (var i = 0; i < expressionList.Count; ++i)
             {
-                expressionList[i] = ComputeExpression2(expressionList[i]);
+                expressionList[i] = ComputeExpressionV2_1(expressionList[i]);
             }
             var joinedExpressionList = new string(string.Empty);
 
@@ -145,9 +166,32 @@ namespace ConsoleApp1
             return lastResult;
         }
 
-        public void SpecialCheckForNegatives(string str)
+        public void SpecialCheckAndActForNegatives(ref string str, ref List<string> operands, ref List<(char character, int index)> operatorsIndexes)
         {
-
+            if (operatorsIndexes.Count >= operatorsIndexes.Count)
+            {
+                var operandsCount = 0;
+                if(operatorsIndexes[0].index == 0)
+                {
+                    operands[operandsCount] = new string(operands[operandsCount].Prepend('-')
+                                                                                .ToArray());
+                    operatorsIndexes.RemoveAt(0);
+                }
+                for (var x = 0; x < operatorsIndexes.Count;)// in minuses)
+                {
+                    if (IsOperator(str[operatorsIndexes[x].index - 1]))
+                    {
+                        operands[operandsCount + 1] = new string(operands[operandsCount + 1].Prepend('-')
+                                    .ToArray());
+                        operatorsIndexes.RemoveAt(x);
+                        ++operandsCount;
+                    }
+                    else
+                    {
+                        ++x;
+                    }
+                }
+            }
         }
 
         public (List<string>, List<char>) ExpressionOpList(string str)
