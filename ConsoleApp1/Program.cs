@@ -7,11 +7,15 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var var1 = double.Parse("231999.248");
-            var str = "123456";
-            str = new string(str.Prepend('-').ToArray());
-            Console.WriteLine(str);
+            var methodInfo = typeof(Funcs).GetMethod("ComputeOperators");
 
+            var attribute = Attribute.GetCustomAttribute(methodInfo, typeof(VersionAttribute));
+            if (attribute != null)
+            {
+                var version = ((VersionAttribute)attribute).Version;
+                var description = ((VersionAttribute)attribute).Description;
+                Console.WriteLine($"Version: {version}, Description: {description}{Environment.NewLine}Is Upgraded from previous versions: {((VersionAttribute)attribute).IsUpgradedFromPrevVersions}");
+            }
         }
     }
 }

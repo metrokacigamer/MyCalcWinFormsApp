@@ -9,7 +9,7 @@ namespace ConsoleApp1
 {
     public class Funcs
     {
-        //v2.1
+        [Version("2.1", Description = "some methods are upgraded from v2.0", IsUpgradedFromPrevVersions = true)]
         public string ComputeOperators(string str) // es varianti momivida azrad ro davweqi da ashkarad gacilebit sjobs :D
         {
             if (str == string.Empty)
@@ -303,7 +303,7 @@ namespace ConsoleApp1
             }
         }
 
-        //v1.0
+        [Version("1.0", Description = "below methods are no longer in use")]
 
         public static string ComputeExpression(string str)
         {
@@ -436,7 +436,8 @@ namespace ConsoleApp1
             newStr = newStr.Insert(startingIndex + stringResult.Length, newStr2);
             str = new StringBuilder(newStr);
         }
-
+        
+        [Version("2.1", Description = "below methods are used only in Form1.cs")]
         public string AddParenthesis_1(string text)
         {
             if (text == string.Empty || IsOperator(text.Last()) || text.Last() == '(')
@@ -460,6 +461,8 @@ namespace ConsoleApp1
                 return string.Empty;
             }
         }
+        
+        [Version("2.1")]
 
         public bool HasAMatchingParenthesis_1(string text, out int index)
         {
@@ -474,6 +477,7 @@ namespace ConsoleApp1
                 return false;
             }
         }
+
 
         public int FindAMatchingParenthesis(string text)
         {
