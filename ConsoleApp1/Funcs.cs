@@ -177,7 +177,7 @@ namespace ConsoleApp1
                                                                                 .ToArray());
                     operatorsIndexes.RemoveAt(0);
                 }
-                for (var x = 0; x < operatorsIndexes.Count;)// in minuses)
+                for (var x = 0; x < operatorsIndexes.Count;)
                 {
                     if (IsOperator(str[operatorsIndexes[x].index - 1]))
                     {
