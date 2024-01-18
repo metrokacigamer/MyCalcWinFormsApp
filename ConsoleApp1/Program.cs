@@ -7,7 +7,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var methodInfo = typeof(Funcs).GetMethod("ComputeOperators");
+            var methodInfo = typeof(Funcs).GetMethod("ComputeExpressionV2_1");
 
             var attribute = Attribute.GetCustomAttribute(methodInfo, typeof(VersionAttribute));
             if (attribute != null)
@@ -15,6 +15,10 @@ namespace ConsoleApp1
                 var version = ((VersionAttribute)attribute).Version;
                 var description = ((VersionAttribute)attribute).Description;
                 Console.WriteLine($"Version: {version}, Description: {description}{Environment.NewLine}Is Upgraded from previous versions: {((VersionAttribute)attribute).IsUpgradedFromPrevVersions}");
+            }
+            else
+            {
+                Console.WriteLine("given method doesn't have such attribute");
             }
         }
     }
