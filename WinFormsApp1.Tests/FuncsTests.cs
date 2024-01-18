@@ -10,6 +10,8 @@ namespace WinFormsApp1.Tests
     public class FuncsTests
     {
         Funcs Funcs = new Funcs();
+
+        //v1.0 tests
         [Test]
         public void PosOfMinPlus_Test_Works()
         {
@@ -191,6 +193,8 @@ namespace WinFormsApp1.Tests
             Assert.That(actual1, Is.EqualTo(expected1));
         }
 
+        //v2.0 tests
+
         [Test]
         public void ComputeOperators_Test_Works()
         {
@@ -282,6 +286,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual5, Is.EqualTo(expected5));
         }
 
+        //v2.1 tests
         [Test]
         public void ExpressionList_CheckingExpressions_ReturnsExpressionsCorrectly()
         {
