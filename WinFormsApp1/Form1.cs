@@ -132,7 +132,14 @@ namespace WinFormsApp1
                 expression_label.Text += 0;
             }
             previous_expression_label.Text = expression_label.Text;
-            expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
+            try
+            {
+                expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("something went wrong");
+            }
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -174,14 +181,57 @@ namespace WinFormsApp1
             panel1.Visible = false;
         }
 
-        private void buttonTrigFunc_Click(object sender, EventArgs e)
+        private void buttonSin_Click(object sender, EventArgs e)
         {
             try
             {
-                var result = Funcs.DecideHowToAddTrigFunc(expression_label.Text);
-                expression_label.Text = result;
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "sin", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
             }
             catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonCos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cos", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonTan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "tan", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+        private void buttonCot_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cot", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }

@@ -295,7 +295,7 @@
             button_sin.Text = "sin";
             button_sin.UseVisualStyleBackColor = true;
             button_sin.Visible = false;
-            button_sin.Click += buttonTrigFunc_Click;
+            button_sin.Click += buttonSin_Click;
             // 
             // button_cos
             // 
@@ -307,7 +307,7 @@
             button_cos.Text = "cos";
             button_cos.UseVisualStyleBackColor = true;
             button_cos.Visible = false;
-            button_cos.Click += buttonTrigFunc_Click;
+            button_cos.Click += buttonCos_Click;
             // 
             // button_tan
             // 
@@ -319,7 +319,7 @@
             button_tan.Text = "tan";
             button_tan.UseVisualStyleBackColor = true;
             button_tan.Visible = false;
-            button_tan.Click += buttonTrigFunc_Click;
+            button_tan.Click += buttonTan_Click;
             // 
             // button_cot
             // 
@@ -331,7 +331,7 @@
             button_cot.Text = "cot";
             button_cot.UseVisualStyleBackColor = true;
             button_cot.Visible = false;
-            button_cot.Click += buttonTrigFunc_Click;
+            button_cot.Click += buttonCot_Click;
             // 
             // panel1
             // 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleApp1
@@ -506,9 +508,128 @@ namespace ConsoleApp1
             return text.Length - i;
         }
 
-        public string DecideHowToAddTrigFunc(string text)
+        [Version("2.2")]
+        public string DecideHowToAddTrigFunc(string text, string FuncName, out int indexToRemoveFrom)
         {
-            throw new NotImplementedException();
+            if (text == string.Empty || text.Last() == '(')// "+|-123",
+            {
+                indexToRemoveFrom = text.Length;
+                return $"{FuncName}(0)";
+            }
+            else if (IsOperator(text.Last()))
+            {
+                indexToRemoveFrom = text.Length;
+                return $"{FuncName}(0)";
+            }
+            else if (text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
+            {
+                var index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                var expression = text.Substring(index, text.Length - index);
+                if(LastOperandIsNegative(text, out var signIndex))
+                {
+                    expression = expression.Insert(0, "(-");
+                    expression = expression.Insert(expression.Length - 1, ")");
+                    index = signIndex;
+                }
+                indexToRemoveFrom = index;
+                return $"{FuncName}{expression}";
+            }
+            else if (LastIsATrigonometricExpression(text, out int trigExpIndex))
+            {
+                var trigExp = text.Substring(trigExpIndex, text.Length - trigExpIndex);
+                if(LastOperandIsNegative(text, out var signIndex))
+                {
+                    trigExpIndex = signIndex;
+                    trigExp = new string(trigExp.Prepend('-').ToArray());
+                }
+                indexToRemoveFrom = trigExpIndex;
+                return $"{FuncName}({trigExp})";
+            }
+            else if (LastOperandIsNegative(text, out int signIndex))
+            {
+                var operand = text.Substring(signIndex, text.Length - signIndex);
+                indexToRemoveFrom = signIndex;
+                return $"{FuncName}({operand})";
+            }
+            else
+            {
+                var operand = LastOperand(text);
+                indexToRemoveFrom = text.Length - operand.Length;
+                return $"{FuncName}({operand})";
+            }
+        }
+
+        [Version("2.2", Description = "operand also means expression in parenthesis here\n" +
+                                        "Preferred to make this method rather than changing NumberBeforeOperator " +
+                                        "for the sake of backwards compatibility and prevention of loss of data" +
+                                        " while parsing strings to doubles and back to strings")]
+        public string LastOperand(string text)
+        {
+            if(text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
+            {
+                int par1_index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                return text.Substring(par1_index, text.Length - par1_index);
+            }
+            var result = new string("");
+            for (var i = 1; !(text.Length < i || IsOperator(text[text.Length - i])); ++i)
+            {
+                result = result.Insert(0, text[text.Length - i].ToString());
+            }
+
+            return result;
+        }
+
+        [Version("2.2",Description = "operand also means expression in parenthesis here")]
+        public bool LastOperandIsNegative(string text, out int signIndex)
+        {
+            var operand = LastOperand(text);
+            var index = text.Length - operand.Length;
+            if(index == 0 || index == text.Length)
+            {
+                signIndex = text.Length;
+                return false;
+            }
+            else if(index == 1 && text[0] == '-')
+            {
+                signIndex = index - 1;
+                return true;
+            }
+            if (text[index - 1] == '-' && IsOperator(text[index - 2]))
+            {
+                signIndex = index - 1;
+                return true;
+            }
+            signIndex = text.Length;
+            return false;
+        }
+
+        [Version("2.2")]
+        public bool LastIsATrigonometricExpression(string text, out int trigExpIndex)
+        {
+            if (text.Last() == ')' && text.Length >= "sin(n)".Length)
+            {
+                var index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                if (index < 3)
+                {
+                    trigExpIndex = text.Length;
+                    return false;
+                }
+                var threeCharsBeforeExpression = text.Substring(index - 3, 3);
+                var funcNames = new List<string>()
+                {
+                    "sin",
+                    "cos",
+                    "tan",
+                    "cot"
+                };
+                if (funcNames.Any(x => x == threeCharsBeforeExpression))
+                {
+                    trigExpIndex = index - 3;
+                    return true;
+                }
+            }
+            trigExpIndex = text.Length;
+            return false;
         }
     }
 }

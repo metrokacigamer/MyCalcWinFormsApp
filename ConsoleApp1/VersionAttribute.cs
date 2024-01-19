@@ -9,15 +9,16 @@ namespace ConsoleApp1
     [AttributeUsage(AttributeTargets.Method)]
     public class VersionAttribute: Attribute
     {
-        public string Version { get; } = string.Empty;
+        public string WasAddedInVersion { get; } = string.Empty;
+        public string WasUpgradedInVersion { get; set; }
         public string Description { get; init; } = "Attribute contains no description";
-
         public bool IsUpgradedFromPrevVersions { get; init; } = false;
-        
         public bool IsInUse { get; set; } = true;
+
         public VersionAttribute(string version)
         {
-            Version = $"v{version}";
+            WasAddedInVersion = $"v{version}";
+            WasUpgradedInVersion = WasAddedInVersion;
         }
     }
 }

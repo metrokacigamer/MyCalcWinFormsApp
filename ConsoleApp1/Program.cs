@@ -12,7 +12,7 @@ namespace ConsoleApp1
             var attribute = Attribute.GetCustomAttribute(methodInfo, typeof(VersionAttribute));
             if (attribute != null)
             {
-                var version = ((VersionAttribute)attribute).Version;
+                var version = ((VersionAttribute)attribute).WasUpgradedInVersion;
                 var description = ((VersionAttribute)attribute).Description;
                 Console.WriteLine($"Version: {version}, Description: {description}{Environment.NewLine}Is Upgraded from previous versions: {((VersionAttribute)attribute).IsUpgradedFromPrevVersions}");
             }
