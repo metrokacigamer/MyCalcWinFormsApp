@@ -69,69 +69,69 @@ namespace WinFormsApp1
 
         private void buttonPlus_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '+';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.'))
             {
                 expression_label.Text += "0+";
+            }
+            else if (!(Funcs.IsOperator(expression_label.Text.Last()) || expression_label.Text.EndsWith('.')))
+            {
+                expression_label.Text += '+';
             }
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
+            {
+                expression_label.Text += "0-";
+                return;
+            }
             var lastIsOperator = Funcs.IsOperator(expression_label.Text.Last());
             var preLastIsNotOperator = !(Funcs.IsOperator(expression_label.Text.Reverse().ToArray()[1]));
             if (lastIsOperator && preLastIsNotOperator)
             {
                 expression_label.Text += '-';
+                return;
             }
-            else if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.'))
-            {
-                expression_label.Text += "0-";
-            }
+            expression_label.Text += '-';
         }
 
         private void buttonMultiply_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '*';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
             {
                 expression_label.Text += "0*";
+            }
+            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            {
+                expression_label.Text += '*';
             }
         }
 
         private void buttonDivide_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '/';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
             {
                 expression_label.Text += "0/";
+            }
+            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            {
+                expression_label.Text += '/';
             }
         }
 
         private void buttonEquals_Click(object sender, EventArgs e)
         {
-            if (expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*'))
+            if (Funcs.HasForUnmatchedParenthesis(expression_label.Text))
             {
-                expression_label.Text += 1;
+                MessageBox.Show("Expression contains unmatched parenthesis");
+                return;
             }
-            else if (expression_label.Text.EndsWith('.'))
-            {
-                expression_label.Text += 0;
-            }
-            else if (expression_label.Text == string.Empty)
-            {
-                expression_label.Text += 0;
-            }
+
+            var properEnding = Funcs.ProperFinishToTheInput(expression_label.Text);
+            expression_label.Text += properEnding;
             previous_expression_label.Text = expression_label.Text;
+            
             try
             {
                 expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);

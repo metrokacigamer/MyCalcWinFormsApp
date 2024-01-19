@@ -631,5 +631,27 @@ namespace ConsoleApp1
             trigExpIndex = text.Length;
             return false;
         }
+
+        public string ProperFinishToTheInput(string text)
+        {
+            if(text.EndsWith('/') || text.EndsWith('*'))
+            {
+                return "1";
+            }
+            else if (text.EndsWith('.') || text == string.Empty || IsOperator(text.Last()))
+            {
+                return "0";
+            }
+            return string.Empty;
+        }
+
+        public bool HasForUnmatchedParenthesis(string text)
+        {
+            if (text.Count(x => x == '(') > text.Count(x => x == ')'))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
