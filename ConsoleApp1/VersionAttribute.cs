@@ -13,7 +13,7 @@ namespace ConsoleApp1
         public string Description { get; init; } = "Attribute contains no description";
 
         public bool IsUpgradedFromPrevVersions { get; init; } = false;
-        p
+        
         public bool IsInUse { get; set; } = true;
         public VersionAttribute(string version)
         {
