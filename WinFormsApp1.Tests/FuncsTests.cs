@@ -11,7 +11,7 @@ namespace WinFormsApp1.Tests
     {
         Funcs Funcs = new Funcs();
 
-        //v1.0 tests
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void PosOfMinPlus_Test_Works()
         {
@@ -33,6 +33,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual, Is.EqualTo(expected));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void PosOfMultDiv_Test_Works()
         {
@@ -62,6 +63,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual2, Is.EqualTo(expected2));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void NumberAfterOperator_ContainsBlanks_ReturnsWithoutBlanks()
         {
@@ -91,6 +93,7 @@ namespace WinFormsApp1.Tests
             Assert.Throws<FormatException>(() => Funcs.NumberAfterOperator(testString4, 0));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void NumberAfterOperator_OperatorInTheMiddle_ReturnsValue()
         {
@@ -113,6 +116,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual2, Is.EqualTo(expected2));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void NumberBeforeOperator_ContainsBlanks_ReturnsWithoutBlanks()
         {
@@ -142,6 +146,7 @@ namespace WinFormsApp1.Tests
             Assert.Throws<FormatException>(() => Funcs.NumberBeforeOperator(testString4, 0));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void NumberBeforeOperator_OperatorInTheMiddle_ReturnsValue()
         {
@@ -164,6 +169,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual2, Is.EqualTo(expected2));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void ChangeOpWithResult_Test_Works()
         {
@@ -179,6 +185,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual1.ToString(), Is.EqualTo(expected1.ToString()));
         }
 
+        [Version("1.0", IsInUse = false)]
         [Test]
         public void ComputeExpression_Test_Works()
         {
@@ -193,8 +200,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual1, Is.EqualTo(expected1));
         }
 
-        //v2.0 tests
-
+        [Version("2.1", IsUpgradedFromPrevVersions = true)]
         [Test]
         public void ComputeOperators_Test_Works()
         {
@@ -218,6 +224,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual3, Is.EqualTo(expected3));
         }
 
+        [Version("2.0")]
         [Test]
         public void LastOperandContainsDecimal_Test_Works()
         {
@@ -253,6 +260,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual6, Is.EqualTo(expected6));
         }
 
+        [Version("2.0")]
         [Test]
         public void WhatToAdd_Test_Works()
         {
@@ -286,7 +294,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual5, Is.EqualTo(expected5));
         }
 
-        //v2.1 tests
+        [Version("2.1")]
         [Test]
         public void ExpressionList_CheckingExpressions_ReturnsExpressionsCorrectly()
         {
@@ -355,6 +363,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual6, Is.EqualTo(expected6));
         }
 
+        [Version("2.1")]
         [Test]
         public void ExpressionList_CheckingOperators_ReturnsOperatorsCorrectly()
         {
@@ -417,6 +426,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual6, Is.EqualTo(expected6));
         }
 
+        [Version("2.1")]
         [Test]
         public void ComputeExpression2_Tests_Work()
         {
