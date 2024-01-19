@@ -152,5 +152,100 @@ namespace WinFormsApp1
             var whatToAdd = Funcs.AddParenthesis_2(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (panel1.Visible)
+            {
+                // If the panel is visible, hide it
+                panel1.Visible = false;
+            }
+            else
+            {
+                // If the panel is hidden, show it
+                panel1.Visible = true;
+                // You can also load or update the list items here if needed
+                // listBoxItems.Items.Clear();
+                // listBoxItems.Items.AddRange(GetYourListItems());
+            }
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+
+        private void buttonSin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonCos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonTan_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonCot_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+            if(listBox1.SelectedIndex == 0)
+            {
+                HideTrigonometric();
+                ShowStandard();
+            }
+            else if(listBox1.SelectedIndex == 1)
+            {
+                HideStandard();
+                ShowTrigonometric();
+            }
+            //button1.Visible = false;
+        }
+
+        private void HideTrigonometric()
+        {
+            button_sin.Visible = false;
+            button_cos.Visible = false;
+            button_tan.Visible = false;
+            button_cot.Visible = false;
+        }
+
+        private void ShowStandard()
+        {
+            button_minus.Visible = true;
+            button_plus.Visible = true;
+            button_multiply.Visible = true;
+            button_divide.Visible = true;
+            button_parenthesis_1.Visible = true;
+            button_parenthesis_2.Visible = true;
+        }
+
+        private void ShowTrigonometric()
+        {
+            button_sin.Visible = true;
+            button_cos.Visible = true;
+            button_tan.Visible = true;
+            button_cot.Visible = true;
+        }
+
+        private void HideStandard()
+        {
+            button_minus.Visible = false;
+            button_plus.Visible = false;
+            button_multiply.Visible = false;
+            button_divide.Visible = false;
+            button_parenthesis_1.Visible = false;
+            button_parenthesis_2.Visible = false;
+        }
     }
 }

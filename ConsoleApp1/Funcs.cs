@@ -500,5 +500,10 @@ namespace ConsoleApp1
             }
             return text.Length - i;
         }
+
+        public void HideStandard()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

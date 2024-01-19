@@ -38,17 +38,25 @@
             button_8 = new Button();
             button_9 = new Button();
             button_0 = new Button();
+            button_decimal = new Button();
             button_equals = new Button();
             button_clear = new Button();
             button_plus = new Button();
             button_minus = new Button();
             button_multiply = new Button();
             button_divide = new Button();
-            button_decimal = new Button();
             expression_label = new Label();
             previous_expression_label = new Label();
             button_parenthesis_1 = new Button();
             button_parenthesis_2 = new Button();
+            button_sin = new Button();
+            button_cos = new Button();
+            button_tan = new Button();
+            button_cot = new Button();
+            panel1 = new Panel();
+            listBox1 = new ListBox();
+            button_extendLeft1 = new Button();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // button_1
@@ -161,6 +169,17 @@
             button_0.UseVisualStyleBackColor = true;
             button_0.Click += button0_Click;
             // 
+            // button_decimal
+            // 
+            button_decimal.Font = new Font("Stencil", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_decimal.Location = new Point(160, 240);
+            button_decimal.Name = "button_decimal";
+            button_decimal.Size = new Size(75, 75);
+            button_decimal.TabIndex = 17;
+            button_decimal.Text = ".";
+            button_decimal.UseVisualStyleBackColor = true;
+            button_decimal.Click += buttonDecimal_Click;
+            // 
             // button_equals
             // 
             button_equals.Font = new Font("Agency FB", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -227,17 +246,6 @@
             button_divide.UseVisualStyleBackColor = true;
             button_divide.Click += buttonDivide_Click;
             // 
-            // button_decimal
-            // 
-            button_decimal.Font = new Font("Stencil", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_decimal.Location = new Point(160, 240);
-            button_decimal.Name = "button_decimal";
-            button_decimal.Size = new Size(75, 75);
-            button_decimal.TabIndex = 17;
-            button_decimal.Text = ".";
-            button_decimal.UseVisualStyleBackColor = true;
-            button_decimal.Click += buttonDecimal_Click;
-            // 
             // expression_label
             // 
             expression_label.AutoSize = true;
@@ -277,11 +285,94 @@
             button_parenthesis_2.UseVisualStyleBackColor = true;
             button_parenthesis_2.Click += button_parenthesis_2_Click;
             // 
+            // button_sin
+            // 
+            button_sin.Font = new Font("Segoe UI", 8F);
+            button_sin.Location = new Point(256, 160);
+            button_sin.Name = "button_sin";
+            button_sin.Size = new Size(36, 36);
+            button_sin.TabIndex = 25;
+            button_sin.Text = "sin";
+            button_sin.UseVisualStyleBackColor = true;
+            button_sin.Visible = false;
+            button_sin.Click += buttonSin_Click;
+            // 
+            // button_cos
+            // 
+            button_cos.Font = new Font("Segoe UI", 8F);
+            button_cos.Location = new Point(295, 160);
+            button_cos.Name = "button_cos";
+            button_cos.Size = new Size(36, 36);
+            button_cos.TabIndex = 26;
+            button_cos.Text = "cos";
+            button_cos.UseVisualStyleBackColor = true;
+            button_cos.Visible = false;
+            button_cos.Click += buttonCos_Click;
+            // 
+            // button_tan
+            // 
+            button_tan.Font = new Font("Segoe UI", 8F);
+            button_tan.Location = new Point(256, 199);
+            button_tan.Name = "button_tan";
+            button_tan.Size = new Size(36, 36);
+            button_tan.TabIndex = 27;
+            button_tan.Text = "tan";
+            button_tan.UseVisualStyleBackColor = true;
+            button_tan.Visible = false;
+            button_tan.Click += buttonTan_Click;
+            // 
+            // button_cot
+            // 
+            button_cot.Font = new Font("Segoe UI", 8F);
+            button_cot.Location = new Point(295, 199);
+            button_cot.Name = "button_cot";
+            button_cot.Size = new Size(36, 36);
+            button_cot.TabIndex = 28;
+            button_cot.Text = "cot";
+            button_cot.UseVisualStyleBackColor = true;
+            button_cot.Visible = false;
+            button_cot.Click += buttonCot_Click;
+            // 
+            // panel1
+            // 
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(listBox1);
+            panel1.Location = new Point(241, 81);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(101, 234);
+            panel1.TabIndex = 23;
+            panel1.Visible = false;
+            // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.ItemHeight = 15;
+            listBox1.Items.AddRange(new object[] { "Standard", "Trigonometric" });
+            listBox1.Location = new Point(-1, -1);
+            listBox1.Name = "listBox1";
+            listBox1.RightToLeft = RightToLeft.Yes;
+            listBox1.Size = new Size(101, 229);
+            listBox1.TabIndex = 0;
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
+            // 
+            // button_extendLeft1
+            // 
+            button_extendLeft1.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            button_extendLeft1.Location = new Point(340, 80);
+            button_extendLeft1.Name = "button_extendLeft1";
+            button_extendLeft1.Size = new Size(40, 61);
+            button_extendLeft1.TabIndex = 24;
+            button_extendLeft1.Text = "←";
+            button_extendLeft1.UseVisualStyleBackColor = true;
+            button_extendLeft1.Click += button1_Click_1;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(377, 321);
+            ClientSize = new Size(379, 321);
+            Controls.Add(button_extendLeft1);
+            Controls.Add(panel1);
             Controls.Add(button_parenthesis_2);
             Controls.Add(button_parenthesis_1);
             Controls.Add(previous_expression_label);
@@ -293,6 +384,10 @@
             Controls.Add(button_plus);
             Controls.Add(button_clear);
             Controls.Add(button_equals);
+            Controls.Add(button_sin);
+            Controls.Add(button_cos);
+            Controls.Add(button_tan);
+            Controls.Add(button_cot);
             Controls.Add(button_1);
             Controls.Add(button_4);
             Controls.Add(button_7);
@@ -303,8 +398,11 @@
             Controls.Add(button_6);
             Controls.Add(button_9);
             Controls.Add(button_0);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Form1";
             Text = "MyCalc";
+            Load += Form1_Load;
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -332,5 +430,12 @@
         private Label previous_expression_label;
         private Button button_parenthesis_1;
         private Button button_parenthesis_2;
+        private Panel panel1;
+        private Button button_extendLeft1;
+        private ListBox listBox1;
+        private Button button_sin;
+        private Button button_cos;
+        private Button button_tan;
+        private Button button_cot;
     }
 }
