@@ -32,10 +32,10 @@ namespace ConsoleApp1
                                             .Where(x => x.Character == '*' || x.Character == '/')
                                             .Select(x => x.Index)
                                             .ToList();
-            
+
             MultiplicationsAndDivisions(posOfMultAndDiv, ref operators, ref operands);
             AdditionsAndSubtractions(ref operators, ref operands);
-            
+
             var res = operands[0];
             var lastResult = StringToReturn(res);
             return lastResult;
@@ -171,7 +171,7 @@ namespace ConsoleApp1
             if (operatorsIndexes.Count >= operatorsIndexes.Count)
             {
                 var operandsCount = 0;
-                if(operatorsIndexes[0].index == 0)
+                if (operatorsIndexes[0].index == 0)
                 {
                     operands[operandsCount] = new string(operands[operandsCount].Prepend('-')
                                                                                 .ToArray());
@@ -262,7 +262,7 @@ namespace ConsoleApp1
                 return res;
         }
 
-        public string WhatToAdd(string text)
+        public string DecideWhatToAdd(string text)
         {
             if (LastOperandContainsDecimal(text))
             {
@@ -428,17 +428,23 @@ namespace ConsoleApp1
 
 
             var newStr = str.ToString()
-                .Remove(startingIndex, endingIndex - startingIndex + 1);
+                            .Remove(startingIndex, endingIndex - startingIndex + 1);
+
             var stringResult = result.ToString();
+
             newStr = newStr.Insert(startingIndex, stringResult);
+
             var count = endingIndex + 1 - startingIndex - stringResult.Length;
+
             var newStr2 = new string(' ', count);
+
             newStr = newStr.Insert(startingIndex + stringResult.Length, newStr2);
+
             str = new StringBuilder(newStr);
         }
-        
+
         [Version("2.1", Description = "below methods are used only in Form1.cs")]
-        public string AddParenthesis_1(string text)
+        public string DecideHowToAddParenthesis_1(string text)
         {
             if (text == string.Empty || IsOperator(text.Last()) || text.Last() == '(')
             {
@@ -450,7 +456,7 @@ namespace ConsoleApp1
             }
         }
 
-        public string AddParenthesis_2(string text)
+        public string DecideHowToAddParenthesis_2(string text)
         {
             if (HasAMatchingParenthesis_1(text, out _) || !IsOperator(text.Last()))
             {
@@ -461,7 +467,7 @@ namespace ConsoleApp1
                 return string.Empty;
             }
         }
-        
+
         [Version("2.1")]
 
         public bool HasAMatchingParenthesis_1(string text, out int index)
@@ -477,7 +483,6 @@ namespace ConsoleApp1
                 return false;
             }
         }
-
 
         public int FindAMatchingParenthesis(string text)
         {
@@ -501,7 +506,7 @@ namespace ConsoleApp1
             return text.Length - i;
         }
 
-        public void HideStandard()
+        public string DecideHowToAddTrigFunc(string text)
         {
             throw new NotImplementedException();
         }

@@ -63,7 +63,7 @@ namespace WinFormsApp1
 
         private void buttonDecimal_Click(object sender, EventArgs e)
         {
-            var stringToAdd = Funcs.WhatToAdd(expression_label.Text);
+            var stringToAdd = Funcs.DecideWhatToAdd(expression_label.Text);
             expression_label.Text += stringToAdd;
         }
 
@@ -143,13 +143,13 @@ namespace WinFormsApp1
 
         private void button_parenthesis_1_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.AddParenthesis_1(expression_label.Text);
+            var whatToAdd = Funcs.DecideHowToAddParenthesis_1(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
 
         private void button_parenthesis_2_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.AddParenthesis_2(expression_label.Text);
+            var whatToAdd = Funcs.DecideHowToAddParenthesis_2(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
 
@@ -157,12 +157,10 @@ namespace WinFormsApp1
         {
             if (panel1.Visible)
             {
-                // If the panel is visible, hide it
                 panel1.Visible = false;
             }
             else
             {
-                // If the panel is hidden, show it
                 panel1.Visible = true;
                 // You can also load or update the list items here if needed
                 // listBoxItems.Items.Clear();
@@ -176,24 +174,17 @@ namespace WinFormsApp1
             panel1.Visible = false;
         }
 
-        private void buttonSin_Click(object sender, EventArgs e)
+        private void buttonTrigFunc_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void buttonCos_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonTan_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonCot_Click(object sender, EventArgs e)
-        {
-
+            try
+            {
+                var result = Funcs.DecideHowToAddTrigFunc(expression_label.Text);
+                expression_label.Text = result;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -209,7 +200,6 @@ namespace WinFormsApp1
                 HideStandard();
                 ShowTrigonometric();
             }
-            //button1.Visible = false;
         }
 
         private void HideTrigonometric()

@@ -274,11 +274,11 @@ namespace WinFormsApp1.Tests
 
 
             //Act
-            var actual1 = Funcs.WhatToAdd(testString1);
-            var actual2 = Funcs.WhatToAdd(testString2);
-            var actual3 = Funcs.WhatToAdd(testString3);
-            var actual4 = Funcs.WhatToAdd(testString4);
-            var actual5 = Funcs.WhatToAdd(testString5);
+            var actual1 = Funcs.DecideWhatToAdd(testString1);
+            var actual2 = Funcs.DecideWhatToAdd(testString2);
+            var actual3 = Funcs.DecideWhatToAdd(testString3);
+            var actual4 = Funcs.DecideWhatToAdd(testString4);
+            var actual5 = Funcs.DecideWhatToAdd(testString5);
 
             //Assert
             var expected1 = "0.";
