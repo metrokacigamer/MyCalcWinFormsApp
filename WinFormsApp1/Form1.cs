@@ -122,7 +122,7 @@ namespace WinFormsApp1
 
         private void buttonEquals_Click(object sender, EventArgs e)
         {
-            if (Funcs.HasForUnmatchedParenthesis(expression_label.Text))
+            if (Funcs.HasUnmatchedParenthesis(expression_label.Text))
             {
                 MessageBox.Show("Expression contains unmatched parenthesis");
                 return;

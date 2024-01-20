@@ -11,7 +11,10 @@ namespace ConsoleApp1
 {
     public class Funcs
     {
-        [Version("2.1", Description = "some methods are upgraded from v2.0", IsUpgradedFromPrevVersions = true)]
+        [Version("2.0", Description = "this method should always stay in use and nothing should be altered" +
+                                    "(unless there are bugs I didnt account for, but I doubt there are any," +
+                                    " code is too simple)",
+                                    WasUpgradedInVersion = "v2.1")]
         public string ComputeOperators(string str) // es varianti momivida azrad ro davweqi da ashkarad gacilebit sjobs :D
         {
             if (str == string.Empty)
@@ -43,6 +46,7 @@ namespace ConsoleApp1
             return lastResult;
         }
 
+        [Version("2.1")]
         private void AdditionsAndSubtractions(ref List<char> operators, ref List<string> operands)
         {
             for (int op = 0; op < operators.Count; ++op)
@@ -65,6 +69,9 @@ namespace ConsoleApp1
             operands.RemoveAll(x => x.Equals(string.Empty));
         }
 
+        [Version("2.1", Description = "this method should be called before the very last operation on expression" +
+                                     "(which is AdditionsAndSubtractions() )" +
+                                     " these methods in theory should also always stay in use")]
         private void MultiplicationsAndDivisions(List<int> posOfMultAndDiv, ref List<char> operators, ref List<string> operands)
         {
             foreach (var op in posOfMultAndDiv)
@@ -89,23 +96,33 @@ namespace ConsoleApp1
             operators.RemoveAll(x => x.Equals(default));
         }
 
+        [Version("2.1")]
         public string Subtraction(string v1, string v2)
         {
             var result = (double.Parse(v1) - double.Parse(v2)).ToString();
             return result;
         }
-
+        
+        [Version("2.1")]
         public string Addition(string v1, string v2)
         {
             var result = (double.Parse(v1) + double.Parse(v2)).ToString();
             return result;
         }
-
+        
+        [Version("2.1")]
         public string Division(string v1, string v2)
         {
             var result = (double.Parse(v1) / double.Parse(v2)).ToString();
             return result;
         }
+        
+        [Version("2.1", Description = "these methods for simple arithmetics were added in v2.1," +
+                                " the intention is to stop parsing strings into doubles for computation" +
+                                " sometime into the future," +
+                                " Maybe I will write a code that does simple math operations" +
+                                " on strings without casting them into doubles to increase accuracy," +
+                                " but that is too much of a headache for the time being")]
 
         public string Multiplication(string v1, string v2)
         {
@@ -113,6 +130,7 @@ namespace ConsoleApp1
             return result;
         }
 
+        [Version("2.1", Description = "method added in v2.1 to improve code readability")]
         public List<string> GenerateOperandsList(string str)
         {
             var separatorChars = new char[]
@@ -127,7 +145,7 @@ namespace ConsoleApp1
             operands.RemoveAll(x => x == string.Empty);
             return operands;
         }
-
+        [Version("2.1", Description = "method added in v2.1 to improve code readability")]
         private List<(char character, int index)> GenerateOperatorsAndIndexesList(string str)
         {
             var result = str.Select((character, index) => (character, index))
@@ -136,6 +154,12 @@ namespace ConsoleApp1
             return result;
         }
 
+        [Version("2.1", Description = "this method essentially gets every Funcs class functionality together," +
+            " problem is functionalities' count will increase with the development of the application," +
+            " hence the better version of such method will always be needed as long as the app is getting developed," +
+            " though I do suspect to have a solution to this problem in my mind right now Im not sure how to execute it" +
+            " or whether that solution is of any good," +
+            " maybe in the future I will try it if I decide to completely re-design this calculator application")]
         public string ComputeExpressionV2_1(string str)
         {
             var endIndex = str.LastIndexOf(')');
@@ -143,7 +167,7 @@ namespace ConsoleApp1
             {
                 return ComputeOperators(str);
             }
-            else if ((endIndex == str.Length - 1) && (FindAMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
+            else if ((endIndex == str.Length - 1) && (FindMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
             {
                 return ComputeExpressionV2_1(str.Substring(1, str.Length - 2));
             }
@@ -168,6 +192,8 @@ namespace ConsoleApp1
             return lastResult;
         }
 
+        [Version("2.1", Description ="It is probably better to have this method used" +
+                                    " on the expression before finally passing it to the ComputeOperators() method")]
         public void SpecialCheckAndActForNegatives(ref string str, ref List<string> operands, ref List<(char character, int index)> operatorsIndexes)
         {
             if (operatorsIndexes.Count >= operatorsIndexes.Count)
@@ -195,7 +221,14 @@ namespace ConsoleApp1
                 }
             }
         }
-
+        
+        [Version("2.1", Description = "this method essentially describes the computation process of the expression " +
+                                    "in given application, which is " +
+                                    " first are calculated expressions in parenthesis, once only the numbers and operators are" +
+                                    " left the expression is passed to ComputeOperators() method. Though better version" +
+                                    " of ComputeExpressionV2_1() is needed in v2.2+ to support built in expressions" +
+                                    " such as trigonometric, this specific method should always stay in use")]
+                                 
         public (List<string>, List<char>) ExpressionOpList(string str)
         {
             var result = new List<string>();
@@ -207,7 +240,7 @@ namespace ConsoleApp1
             while (!tempStr.Equals(string.Empty))
             {
                 endIndex = tempStr.LastIndexOf(')');
-                startIndex = FindAMatchingParenthesis(tempStr.Substring(0, Math.Abs(endIndex)));
+                startIndex = FindMatchingParenthesis(tempStr.Substring(0, Math.Abs(endIndex)));
                 if (tempStr.Substring(endIndex + 1) != string.Empty)
                 {
                     result.Add(tempStr.Substring(endIndex + 1));
@@ -245,6 +278,8 @@ namespace ConsoleApp1
             return (result, ops);
         }
 
+        [Version("2.1", Description = "given method essentially returns value in different format" +
+                                    " depending on its value, whether its too \"short\" or too \"long\"")]
         public string StringToReturn(string res)
         {
             var index = 0;
@@ -305,9 +340,11 @@ namespace ConsoleApp1
             }
         }
 
-        [Version("1.0", Description = "below methods are no longer in use")]
+        [Version("1.0", Description = "this is an initial method for computing the expression passed" +
+                                        " by buttonEquals eventhandler," +
+                                        " due to its poor design and performance its been left behind", IsInUse = false)]
 
-        public static string ComputeExpression(string str)
+        public string ComputeExpression(string str)
         {
             var tempStr = new StringBuilder(str);
             var MultDivides = PosOfMultDiv(tempStr);
@@ -345,7 +382,9 @@ namespace ConsoleApp1
             return double.Parse(tempStr.ToString()).ToString();
         }
 
-        public static List<int> PosOfMinPlus(StringBuilder str)
+        [Version("1.0", Description = "could be of use in the future, but is too generic," +
+                                    " right now there are better alternatives depending on the situation", IsInUse = false)]
+        public List<int> PosOfMinPlus(StringBuilder str)
         {
             var list = str.ToString()
                 .Select((x, i) => new { Character = x, Index = i })
@@ -355,7 +394,9 @@ namespace ConsoleApp1
             return list;
         }
 
-        public static List<int> PosOfMultDiv(StringBuilder str)
+        [Version("1.0", Description = "could be of use in the future, but is too generic," +
+                                    " right now there are better alternatives depending on the situation", IsInUse = false)]
+        public List<int> PosOfMultDiv(StringBuilder str)
         {
             var list = str.ToString()
                 .Select((x, i) => new { Character = x, Index = i })
@@ -365,7 +406,8 @@ namespace ConsoleApp1
             return list;
         }
 
-        public static double NumberBeforeOperator(StringBuilder str, int opIndex)
+        [Version("1.0", Description = "these methods is not adviced to be used due to their poor design", IsInUse = false)]
+        public double NumberBeforeOperator(StringBuilder str, int opIndex)
         {
             var temp = new StringBuilder();
             var i = 1;
@@ -384,6 +426,7 @@ namespace ConsoleApp1
             return double.Parse(new string(result));
         }
 
+        [Version("1.0", IsInUse = false)]
         public static double NumberAfterOperator(StringBuilder str, int opIndex)
         {
             var temp = new StringBuilder();
@@ -402,6 +445,7 @@ namespace ConsoleApp1
             return double.Parse(result);
         }
 
+        [Version("1.0", IsInUse = false)]
         public static void ChangeOpWithResult(ref StringBuilder str, double result, int opIndex)
         {
             var i = 1;
@@ -458,9 +502,10 @@ namespace ConsoleApp1
             }
         }
 
+        [Version("2.1")]
         public string DecideHowToAddParenthesis_2(string text)
         {
-            if (HasAMatchingParenthesis_1(text, out _) || !IsOperator(text.Last()))
+            if (HasMatchingParenthesis_1(text, out _) || !IsOperator(text.Last()))
             {
                 return ")";
             }
@@ -472,12 +517,12 @@ namespace ConsoleApp1
 
         [Version("2.1")]
 
-        public bool HasAMatchingParenthesis_1(string text, out int index)
+        public bool HasMatchingParenthesis_1(string text, out int index)
         {
             index = default;
             if (text.Count(x => x == '(') > text.Count(x => x == ')'))
             {
-                index = FindAMatchingParenthesis(text);
+                index = FindMatchingParenthesis(text);
                 return true;
             }
             else
@@ -486,7 +531,7 @@ namespace ConsoleApp1
             }
         }
 
-        public int FindAMatchingParenthesis(string text)
+        public int FindMatchingParenthesis(string text)
         {
             if (!text.Contains('('))
             {
@@ -523,7 +568,7 @@ namespace ConsoleApp1
             }
             else if (text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
             {
-                var index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                var index = FindMatchingParenthesis(text.Substring(0, text.Length - 1));
                 var expression = text.Substring(index, text.Length - index);
                 if(LastOperandIsNegative(text, out var signIndex))
                 {
@@ -559,15 +604,15 @@ namespace ConsoleApp1
             }
         }
 
-        [Version("2.2", Description = "operand also means expression in parenthesis here\n" +
-                                        "Preferred to make this method rather than changing NumberBeforeOperator " +
+        [Version("2.2", Description = "operand can also mean expression in parenthesis here\n" +
+                                        "Preferred to create this new method rather than changing NumberBeforeOperator " +
                                         "for the sake of backwards compatibility and prevention of loss of data" +
                                         " while parsing strings to doubles and back to strings")]
         public string LastOperand(string text)
         {
             if(text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
             {
-                int par1_index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                int par1_index = FindMatchingParenthesis(text.Substring(0, text.Length - 1));
                 return text.Substring(par1_index, text.Length - par1_index);
             }
             var result = new string("");
@@ -579,7 +624,7 @@ namespace ConsoleApp1
             return result;
         }
 
-        [Version("2.2",Description = "operand also means expression in parenthesis here")]
+        [Version("2.2",Description = "operand can also mean expression in parenthesis here")]
         public bool LastOperandIsNegative(string text, out int signIndex)
         {
             var operand = LastOperand(text);
@@ -608,7 +653,7 @@ namespace ConsoleApp1
         {
             if (text.Last() == ')' && text.Length >= "sin(n)".Length)
             {
-                var index = FindAMatchingParenthesis(text.Substring(0, text.Length - 1));
+                var index = FindMatchingParenthesis(text.Substring(0, text.Length - 1));
                 if (index < 3)
                 {
                     trigExpIndex = text.Length;
@@ -631,7 +676,7 @@ namespace ConsoleApp1
             trigExpIndex = text.Length;
             return false;
         }
-
+        [Version("2.2", Description = "added in v2.2")]
         public string ProperFinishToTheInput(string text)
         {
             if(text.EndsWith('/') || text.EndsWith('*'))
@@ -645,7 +690,8 @@ namespace ConsoleApp1
             return string.Empty;
         }
 
-        public bool HasForUnmatchedParenthesis(string text)
+        [Version("2.2", Description = "used for checking the expression before passing it to the expression computing method")]
+        public bool HasUnmatchedParenthesis(string text)
         {
             if (text.Count(x => x == '(') > text.Count(x => x == ')'))
             {
