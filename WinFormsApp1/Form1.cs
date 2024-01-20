@@ -63,76 +63,83 @@ namespace WinFormsApp1
 
         private void buttonDecimal_Click(object sender, EventArgs e)
         {
-            var stringToAdd = Funcs.WhatToAdd(expression_label.Text);
+            var stringToAdd = Funcs.DecideWhatToAdd(expression_label.Text);
             expression_label.Text += stringToAdd;
         }
 
         private void buttonPlus_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '+';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.'))
             {
                 expression_label.Text += "0+";
+            }
+            else if (!(Funcs.IsOperator(expression_label.Text.Last()) || expression_label.Text.EndsWith('.')))
+            {
+                expression_label.Text += '+';
             }
         }
 
         private void buttonMinus_Click(object sender, EventArgs e)
         {
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
+            {
+                expression_label.Text += "0-";
+                return;
+            }
             var lastIsOperator = Funcs.IsOperator(expression_label.Text.Last());
             var preLastIsNotOperator = !(Funcs.IsOperator(expression_label.Text.Reverse().ToArray()[1]));
             if (lastIsOperator && preLastIsNotOperator)
             {
                 expression_label.Text += '-';
+                return;
             }
-            else if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.'))
-            {
-                expression_label.Text += "0-";
-            }
+            expression_label.Text += '-';
         }
 
         private void buttonMultiply_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '*';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
             {
                 expression_label.Text += "0*";
+            }
+            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            {
+                expression_label.Text += '*';
             }
         }
 
         private void buttonDivide_Click(object sender, EventArgs e)
         {
-            if (!(expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*') || expression_label.Text.EndsWith('.')))
-            {
-                expression_label.Text += '/';
-            }
-            else if (expression_label.Text == string.Empty)
+            if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
             {
                 expression_label.Text += "0/";
+            }
+            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            {
+                expression_label.Text += '/';
             }
         }
 
         private void buttonEquals_Click(object sender, EventArgs e)
         {
-            if (expression_label.Text.EndsWith('+') || expression_label.Text.EndsWith('-') || expression_label.Text.EndsWith('/') || expression_label.Text.EndsWith('*'))
+            if (Funcs.HasUnmatchedParenthesis(expression_label.Text))
             {
-                expression_label.Text += 1;
+                MessageBox.Show("Expression contains unmatched parenthesis");
+                return;
             }
-            else if (expression_label.Text.EndsWith('.'))
-            {
-                expression_label.Text += 0;
-            }
-            else if (expression_label.Text == string.Empty)
-            {
-                expression_label.Text += 0;
-            }
+
+            var properEnding = Funcs.ProperFinishToTheInput(expression_label.Text);
+            expression_label.Text += properEnding;
             previous_expression_label.Text = expression_label.Text;
-            expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
+            
+            try
+            {
+                expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("something went wrong");
+            }
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -143,14 +150,142 @@ namespace WinFormsApp1
 
         private void button_parenthesis_1_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.AddParenthesis_1(expression_label.Text);
+            var whatToAdd = Funcs.DecideHowToAddParenthesis_1(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
 
         private void button_parenthesis_2_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.AddParenthesis_2(expression_label.Text);
+            var whatToAdd = Funcs.DecideHowToAddParenthesis_2(expression_label.Text);
             expression_label.Text += whatToAdd;
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (panel1.Visible)
+            {
+                panel1.Visible = false;
+            }
+            else
+            {
+                panel1.Visible = true;
+                // You can also load or update the list items here if needed
+                // listBoxItems.Items.Clear();
+                // listBoxItems.Items.AddRange(GetYourListItems());
+            }
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+
+        private void buttonSin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "sin", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonCos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cos", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void buttonTan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "tan", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        
+        private void buttonCot_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cot", out var index);
+                var text = new string(expression_label.Text.Remove(index));
+                expression_label.Text = $"{text}{toAdd}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+            if(listBox1.SelectedIndex == 0)
+            {
+                HideTrigonometric();
+                ShowStandard();
+            }
+            else if(listBox1.SelectedIndex == 1)
+            {
+                HideStandard();
+                ShowTrigonometric();
+            }
+        }
+
+        private void HideTrigonometric()
+        {
+            button_sin.Visible = false;
+            button_cos.Visible = false;
+            button_tan.Visible = false;
+            button_cot.Visible = false;
+        }
+
+        private void ShowStandard()
+        {
+            button_minus.Visible = true;
+            button_plus.Visible = true;
+            button_multiply.Visible = true;
+            button_divide.Visible = true;
+            button_parenthesis_1.Visible = true;
+            button_parenthesis_2.Visible = true;
+        }
+
+        private void ShowTrigonometric()
+        {
+            button_sin.Visible = true;
+            button_cos.Visible = true;
+            button_tan.Visible = true;
+            button_cot.Visible = true;
+        }
+
+        private void HideStandard()
+        {
+            button_minus.Visible = false;
+            button_plus.Visible = false;
+            button_multiply.Visible = false;
+            button_divide.Visible = false;
+            button_parenthesis_1.Visible = false;
+            button_parenthesis_2.Visible = false;
         }
     }
 }
