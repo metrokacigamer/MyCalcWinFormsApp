@@ -351,7 +351,7 @@
             listBox1.Location = new Point(-1, -1);
             listBox1.Name = "listBox1";
             listBox1.RightToLeft = RightToLeft.Yes;
-            listBox1.Size = new Size(101, 229);
+            listBox1.Size = new Size(101, 244);
             listBox1.TabIndex = 0;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
@@ -360,7 +360,7 @@
             button_extendLeft1.Font = new Font("Arial", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             button_extendLeft1.Location = new Point(340, 80);
             button_extendLeft1.Name = "button_extendLeft1";
-            button_extendLeft1.Size = new Size(40, 61);
+            button_extendLeft1.Size = new Size(62, 61);
             button_extendLeft1.TabIndex = 24;
             button_extendLeft1.Text = "←";
             button_extendLeft1.UseVisualStyleBackColor = true;
@@ -370,7 +370,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(379, 321);
+            ClientSize = new Size(402, 321);
             Controls.Add(button_extendLeft1);
             Controls.Add(panel1);
             Controls.Add(button_parenthesis_2);

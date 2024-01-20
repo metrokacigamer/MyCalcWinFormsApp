@@ -428,7 +428,7 @@ namespace WinFormsApp1.Tests
 
         [Version("2.1")]
         [Test]
-        public void ComputeExpression2_Tests_Work()
+        public void ComputeExpressionV2_1_Tests_Work()
         {
             //Arrange
             var testString1 = "78412*(874.3)+445212/(2.5)";
@@ -437,6 +437,7 @@ namespace WinFormsApp1.Tests
             var testString4 = "(234654)/(350)*(112)*(3)-()";
             var testString5 = "(23423)+((32)/2)/(20)";
             var testString6 = "((23423)*(((32)/2)-(23)))";
+            var testString7 = "45+-(234)";
 
             //Act
             var actual1 = Funcs.ComputeExpressionV2_1(testString1);
@@ -445,6 +446,8 @@ namespace WinFormsApp1.Tests
             var actual4 = Funcs.ComputeExpressionV2_1(testString4);
             var actual5 = Funcs.ComputeExpressionV2_1(testString5);
             var actual6 = Funcs.ComputeExpressionV2_1(testString6);
+            var actual7 = Funcs.ComputeExpressionV2_1(testString7);
+
 
             //Assert
             var expected1 = "68733696.39999999";
@@ -453,6 +456,7 @@ namespace WinFormsApp1.Tests
             var expected4 = "225267.84";
             var expected5 = "23423.8";
             var expected6 = "-163961";
+            var expected7 = "-189";
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
@@ -460,6 +464,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual4, Is.EqualTo(expected4));
             Assert.That(actual5, Is.EqualTo(expected5));
             Assert.That(actual6, Is.EqualTo(expected6));
+            Assert.That(actual7, Is.EqualTo(expected7));
         }
 
         [Version("2.2")]
@@ -541,6 +546,26 @@ namespace WinFormsApp1.Tests
             Assert.That(i10, Is.EqualTo(2));
             Assert.That(i11, Is.EqualTo(0));
             Assert.That(i12, Is.EqualTo(8));
+        }
+
+        [Test]
+        public void ComputeExpressionV2_1_TestingOnTrigFuncs_ExpectNothing()
+        {
+            //Arrange
+            var testString1 = "tan(12)";
+            var testString2 = "12+-tan(456)";
+            
+            //Act
+            var actual1 = Funcs.ComputeExpressionV2_1(testString1);
+            var actual2 = Funcs.ComputeExpressionV2_1(testString2);
+
+            //Assert
+            var expected1 = Funcs.StringToReturn($"{Math.Tan(12)}");
+            var expected2 = Funcs.StringToReturn($"{12 + (-1) * Math.Tan(456)}");
+
+            Assert.That(actual1, Is.EqualTo(expected1));
+            Assert.That(actual2, Is.EqualTo(expected2));
+
         }
     }
 }

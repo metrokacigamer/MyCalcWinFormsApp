@@ -11,6 +11,53 @@ namespace ConsoleApp1
 {
     public class Funcs
     {
+        [Version("2.1", Description = "this method essentially gets every Funcs class functionality together," +
+            " problem is functionalities' count will increase with the development of the application," +
+            " hence the better version of such method will always be needed as long as the app is getting developed," +
+            " though I do suspect to have a solution to this problem in my mind right now Im not sure how to execute it" +
+            " or whether that solution is of any good," +
+            " maybe in the future I will try it if I decide to completely re-design this calculator application")]
+        public string ComputeExpressionV2_1(string str)
+        {
+            var endIndex = str.LastIndexOf(')');
+            if (endIndex == -1)
+            {
+                return ComputeOperators(str);
+            }
+            else if ((endIndex == str.Length - 1) && (FindMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
+            {
+                return ComputeExpressionV2_1(str.Substring(1, str.Length - 2));
+            }
+            else if ((endIndex == str.Length - 1) && (FindMatchingParenthesis(str.Substring(0, str.Length - 1)) == 1))
+            {
+                return "-" + ComputeExpressionV2_1(str.Substring(2, str.Length - 3));
+            }
+
+            var callExpressionOpList = ExpressionOpList(str);
+            var expressionList = callExpressionOpList.Item1;
+            var operatorList = callExpressionOpList.Item2;
+
+            for (var i = 0; i < expressionList.Count; ++i)
+            {
+                if (LastIsATrigonometricExpression(expressionList[i], out _))
+                {
+                    expressionList[i] = ComputeTrigExpressions(expressionList[i]);
+                    continue;
+                }
+                expressionList[i] = ComputeExpressionV2_1(expressionList[i]);
+            }
+            var joinedExpressionList = new string(string.Empty);
+
+            for (var i = 0; i < expressionList.Count - 1; ++i)
+            {
+                expressionList[i] += operatorList[i];
+                joinedExpressionList += expressionList[i];
+            }
+            joinedExpressionList += expressionList.Last();
+            var lastResult = ComputeOperators(joinedExpressionList);
+            return lastResult;
+        }
+
         [Version("2.0", Description = "this method should always stay in use and nothing should be altered" +
                                     "(unless there are bugs I didnt account for, but I doubt there are any," +
                                     " code is too simple)",
@@ -46,6 +93,26 @@ namespace ConsoleApp1
             return lastResult;
         }
 
+        public string ComputeTrigExpressions(string str)
+        {
+            var expressionValue = ComputeExpressionV2_1(str.Substring(3));
+            if (str.Substring(0, 3) == "sin")
+            {
+                return Math.Sin(double.Parse(expressionValue)).ToString();
+            }
+            else if (str.Substring(0, 3) == "cos")
+            {
+                return Math.Cos(double.Parse(expressionValue)).ToString();
+            }
+            else if (str.Substring(0, 3) == "tan")
+            {
+                return Math.Tan(double.Parse(expressionValue)).ToString();
+            }
+            else
+            {
+                return (1 / Math.Tan(double.Parse(expressionValue))).ToString();
+            }
+        }
         [Version("2.1")]
         private void AdditionsAndSubtractions(ref List<char> operators, ref List<string> operands)
         {
@@ -102,28 +169,27 @@ namespace ConsoleApp1
             var result = (double.Parse(v1) - double.Parse(v2)).ToString();
             return result;
         }
-        
+
         [Version("2.1")]
         public string Addition(string v1, string v2)
         {
             var result = (double.Parse(v1) + double.Parse(v2)).ToString();
             return result;
         }
-        
+
         [Version("2.1")]
         public string Division(string v1, string v2)
         {
             var result = (double.Parse(v1) / double.Parse(v2)).ToString();
             return result;
         }
-        
+
         [Version("2.1", Description = "these methods for simple arithmetics were added in v2.1," +
                                 " the intention is to stop parsing strings into doubles for computation" +
                                 " sometime into the future," +
                                 " Maybe I will write a code that does simple math operations" +
                                 " on strings without casting them into doubles to increase accuracy," +
                                 " but that is too much of a headache for the time being")]
-
         public string Multiplication(string v1, string v2)
         {
             var result = (double.Parse(v1) * double.Parse(v2)).ToString();
@@ -145,6 +211,7 @@ namespace ConsoleApp1
             operands.RemoveAll(x => x == string.Empty);
             return operands;
         }
+
         [Version("2.1", Description = "method added in v2.1 to improve code readability")]
         private List<(char character, int index)> GenerateOperatorsAndIndexesList(string str)
         {
@@ -154,45 +221,7 @@ namespace ConsoleApp1
             return result;
         }
 
-        [Version("2.1", Description = "this method essentially gets every Funcs class functionality together," +
-            " problem is functionalities' count will increase with the development of the application," +
-            " hence the better version of such method will always be needed as long as the app is getting developed," +
-            " though I do suspect to have a solution to this problem in my mind right now Im not sure how to execute it" +
-            " or whether that solution is of any good," +
-            " maybe in the future I will try it if I decide to completely re-design this calculator application")]
-        public string ComputeExpressionV2_1(string str)
-        {
-            var endIndex = str.LastIndexOf(')');
-            if (endIndex == -1)
-            {
-                return ComputeOperators(str);
-            }
-            else if ((endIndex == str.Length - 1) && (FindMatchingParenthesis(str.Substring(0, str.Length - 1)) == 0))
-            {
-                return ComputeExpressionV2_1(str.Substring(1, str.Length - 2));
-            }
-
-            var callExpressionOpList = ExpressionOpList(str);
-            var expressionList = callExpressionOpList.Item1;
-            var operatorList = callExpressionOpList.Item2;
-
-            for (var i = 0; i < expressionList.Count; ++i)
-            {
-                expressionList[i] = ComputeExpressionV2_1(expressionList[i]);
-            }
-            var joinedExpressionList = new string(string.Empty);
-
-            for (var i = 0; i < expressionList.Count - 1; ++i)
-            {
-                expressionList[i] += operatorList[i];
-                joinedExpressionList += expressionList[i];
-            }
-            joinedExpressionList += expressionList.Last();
-            var lastResult = ComputeOperators(joinedExpressionList);
-            return lastResult;
-        }
-
-        [Version("2.1", Description ="It is probably better to have this method used" +
+        [Version("2.1", Description = "It is probably better to have this method used" +
                                     " on the expression before finally passing it to the ComputeOperators() method")]
         public void SpecialCheckAndActForNegatives(ref string str, ref List<string> operands, ref List<(char character, int index)> operatorsIndexes)
         {
@@ -221,14 +250,13 @@ namespace ConsoleApp1
                 }
             }
         }
-        
+
         [Version("2.1", Description = "this method essentially describes the computation process of the expression " +
                                     "in given application, which is " +
                                     " first are calculated expressions in parenthesis, once only the numbers and operators are" +
                                     " left the expression is passed to ComputeOperators() method. Though better version" +
                                     " of ComputeExpressionV2_1() is needed in v2.2+ to support built in expressions" +
                                     " such as trigonometric, this specific method should always stay in use")]
-                                 
         public (List<string>, List<char>) ExpressionOpList(string str)
         {
             var result = new List<string>();
@@ -248,13 +276,23 @@ namespace ConsoleApp1
                 }
                 else
                 {
+                    if (LastIsATrigonometricExpression(tempStr, out var trigExpIndex))
+                    {
+                        startIndex = trigExpIndex;
+                    }
                     result.Add(tempStr.Substring(startIndex, endIndex + 1 - startIndex));
                     tempStr = tempStr.Substring(0, startIndex);
                 }
             }
             result.Reverse();
+            bool skipNext = false;
             for (var i = 0; i < result.Count; ++i)
             {
+                if (skipNext)
+                {
+                    continue;
+                }
+
                 if (IsOperator(result[i].First()))
                 {
                     ops.Add(result[i].First());
@@ -263,9 +301,22 @@ namespace ConsoleApp1
                     {
                         result.Remove("");
                     }
+                    skipNext = false;
                 }
 
-                if (IsOperator(result[i].Last()))
+                if (IsOperator(result[i].Last()) && IsOperator(result[i][result[i].Length - 2]))
+                {
+                    ops.Add(result[i][result[i].Length - 2]);
+                    result[i + 1] = result[i + 1].Insert(0, "-(");
+                    result[i + 1] = result[i + 1].Insert(result[i + 1].Length - 1, ")");
+                    result[i] = result[i].Remove(result[i].Length - 2, 2);
+                    if (result[i] == string.Empty)
+                    {
+                        result.Remove("");
+                    }
+                    skipNext = true;
+                }
+                else if (IsOperator(result[i].Last()))
                 {
                     ops.Add(result[i].Last());
                     result[i] = result[i].Remove(result[i].Length - 1, 1);
@@ -273,6 +324,7 @@ namespace ConsoleApp1
                     {
                         result.Remove("");
                     }
+                    skipNext = false;
                 }
             }
             return (result, ops);
@@ -282,21 +334,28 @@ namespace ConsoleApp1
                                     " depending on its value, whether its too \"short\" or too \"long\"")]
         public string StringToReturn(string res)
         {
+            var numbersAfterDecimal = 11;
             var index = 0;
+            const int maxIndex = 15;
             if (LastOperandContainsDecimal(res))
             {
                 index = res.Select((x, i) => new { Character = x, Index = i })
                                     .LastOrDefault(x => x.Character == '.')
                                     .Index;
             }
-            if ((index == default && res.Length > 15) || index > 15)
+
+            if ((index == default && res.Length > maxIndex) || index > maxIndex)
             {
                 return $"{res[0]}.{res[1]}{res[2]}{res[3]}e+{index}";
             }
-            else if (res.Length - index + 1 > 12)
-                return res.Substring(0, index + 12);
+            else if (res.Length - index > numbersAfterDecimal)
+            {
+                return res.Substring(0, index + 1 + numbersAfterDecimal);
+            }
             else
+            {
                 return res;
+            }
         }
 
         public string DecideWhatToAdd(string text)
@@ -343,7 +402,6 @@ namespace ConsoleApp1
         [Version("1.0", Description = "this is an initial method for computing the expression passed" +
                                         " by buttonEquals eventhandler," +
                                         " due to its poor design and performance its been left behind", IsInUse = false)]
-
         public string ComputeExpression(string str)
         {
             var tempStr = new StringBuilder(str);
@@ -516,7 +574,6 @@ namespace ConsoleApp1
         }
 
         [Version("2.1")]
-
         public bool HasMatchingParenthesis_1(string text, out int index)
         {
             index = default;
@@ -531,6 +588,7 @@ namespace ConsoleApp1
             }
         }
 
+        [Version("2.1")]
         public int FindMatchingParenthesis(string text)
         {
             if (!text.Contains('('))
@@ -570,7 +628,7 @@ namespace ConsoleApp1
             {
                 var index = FindMatchingParenthesis(text.Substring(0, text.Length - 1));
                 var expression = text.Substring(index, text.Length - index);
-                if(LastOperandIsNegative(text, out var signIndex))
+                if (LastOperandIsNegative(text, out var signIndex))
                 {
                     expression = expression.Insert(0, "(-");
                     expression = expression.Insert(expression.Length - 1, ")");
@@ -582,7 +640,7 @@ namespace ConsoleApp1
             else if (LastIsATrigonometricExpression(text, out int trigExpIndex))
             {
                 var trigExp = text.Substring(trigExpIndex, text.Length - trigExpIndex);
-                if(LastOperandIsNegative(text, out var signIndex))
+                if (LastOperandIsNegative(text, out var signIndex))
                 {
                     trigExpIndex = signIndex;
                     trigExp = new string(trigExp.Prepend('-').ToArray());
@@ -610,7 +668,7 @@ namespace ConsoleApp1
                                         " while parsing strings to doubles and back to strings")]
         public string LastOperand(string text)
         {
-            if(text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
+            if (text.Last() == ')' && !LastIsATrigonometricExpression(text, out _))
             {
                 int par1_index = FindMatchingParenthesis(text.Substring(0, text.Length - 1));
                 return text.Substring(par1_index, text.Length - par1_index);
@@ -624,17 +682,17 @@ namespace ConsoleApp1
             return result;
         }
 
-        [Version("2.2",Description = "operand can also mean expression in parenthesis here")]
+        [Version("2.2", Description = "operand can also mean expression in parenthesis here")]
         public bool LastOperandIsNegative(string text, out int signIndex)
         {
             var operand = LastOperand(text);
             var index = text.Length - operand.Length;
-            if(index == 0 || index == text.Length)
+            if (index == 0 || index == text.Length)
             {
                 signIndex = text.Length;
                 return false;
             }
-            else if(index == 1 && text[0] == '-')
+            else if (index == 1 && text[0] == '-')
             {
                 signIndex = index - 1;
                 return true;
@@ -676,10 +734,11 @@ namespace ConsoleApp1
             trigExpIndex = text.Length;
             return false;
         }
+
         [Version("2.2", Description = "added in v2.2")]
         public string ProperFinishToTheInput(string text)
         {
-            if(text.EndsWith('/') || text.EndsWith('*'))
+            if (text.EndsWith('/') || text.EndsWith('*'))
             {
                 return "1";
             }
