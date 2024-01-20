@@ -398,7 +398,6 @@
             Controls.Add(button_6);
             Controls.Add(button_9);
             Controls.Add(button_0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "Form1";
             Text = "MyCalc";
             Load += Form1_Load;
