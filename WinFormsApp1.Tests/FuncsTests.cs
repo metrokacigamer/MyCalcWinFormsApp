@@ -296,7 +296,7 @@ namespace WinFormsApp1.Tests
 
         [Version("2.1")]
         [Test]
-        public void ExpressionList_CheckingExpressions_ReturnsExpressionsCorrectly()
+        public void ExpressionOpList_CheckingExpressions_ReturnsExpressionsCorrectly()
         {
             //Arrange
             var testString1 = "78412*(87454124)+445212/(21321)";
@@ -305,6 +305,7 @@ namespace WinFormsApp1.Tests
             var testString4 = "(234654)/(342)*(112)*(3)-()";
             var testString5 = "((23423)*(((32)/2)-(23)))";
             var testString6 = "(23423)+((32)/2)/(23)";
+            var testString7 = "tan(23423)+sin((32)/cos(2))/cot(23)+12/((23)*25/3)";
 
 
             //Act
@@ -314,6 +315,7 @@ namespace WinFormsApp1.Tests
             var actual4 = Funcs.ExpressionOpList(testString4).Item1;
             var actual5 = Funcs.ExpressionOpList(testString5).Item1;
             var actual6 = Funcs.ExpressionOpList(testString6).Item1;
+            var actual7 = Funcs.ExpressionOpList(testString7).Item1;
 
 
             //Assert
@@ -354,18 +356,27 @@ namespace WinFormsApp1.Tests
                 "((32)/2)",
                 "(23)"
             };
+            var expected7 = new List<string>()
+            {
+                "tan(23423)",
+                "sin((32)/cos(2))",
+                "cot(23)",
+                "12",
+                "((23)*25/3)"
 
+            };
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
             Assert.That(actual3, Is.EqualTo(expected3));
             Assert.That(actual4, Is.EqualTo(expected4));
             Assert.That(actual5, Is.EqualTo(expected5));
             Assert.That(actual6, Is.EqualTo(expected6));
+            Assert.That(actual7, Is.EqualTo(expected7));
         }
 
         [Version("2.1")]
         [Test]
-        public void ExpressionList_CheckingOperators_ReturnsOperatorsCorrectly()
+        public void ExpressionOpList_CheckingOperators_ReturnsOperatorsCorrectly()
         {
             //Arrange
             var testString1 = "78412*(87454124)+445212/(21321)";
@@ -374,6 +385,7 @@ namespace WinFormsApp1.Tests
             var testString4 = "(234654)/(342)*(112)*(3)-()";
             var testString5 = "((23423)*(((32)/2)-(23)))";
             var testString6 = "(23423)+((32)/2)/(23)";
+            var testString7 = "tan(23423)+sin((32)/cos(2))/cot(23)+12/((23)*25/3)";
 
 
             //Act
@@ -383,7 +395,7 @@ namespace WinFormsApp1.Tests
             var actual4 = Funcs.ExpressionOpList(testString4).Item2;
             var actual5 = Funcs.ExpressionOpList(testString5).Item2;
             var actual6 = Funcs.ExpressionOpList(testString6).Item2;
-
+            var actual7 = Funcs.ExpressionOpList(testString7).Item2;
 
             //Assert
             var expected1 = new List<char>()
@@ -417,6 +429,13 @@ namespace WinFormsApp1.Tests
                 '+',
                 '/'
             };
+            var expected7 = new List<char>()//"(23423)+((32)/2)/(23)";
+            {
+                '+',
+                '/',
+                '+',
+                '/'
+            };
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
@@ -424,6 +443,7 @@ namespace WinFormsApp1.Tests
             Assert.That(actual4, Is.EqualTo(expected4));
             Assert.That(actual5, Is.EqualTo(expected5));
             Assert.That(actual6, Is.EqualTo(expected6));
+            Assert.That(actual7, Is.EqualTo(expected7));
         }
 
         [Version("2.1")]
@@ -554,18 +574,21 @@ namespace WinFormsApp1.Tests
             //Arrange
             var testString1 = "tan(12)";
             var testString2 = "12+-tan(456)";
-            
+            var testString3 = "tan(23423)+sin((32)/cos(2))/cot(23)+12/((23)*25/3)";
+
             //Act
             var actual1 = Funcs.ComputeExpressionV2_1(testString1);
             var actual2 = Funcs.ComputeExpressionV2_1(testString2);
+            var actual3 = Funcs.ComputeExpressionV2_1(testString3);
 
             //Assert
             var expected1 = Funcs.StringToReturn($"{Math.Tan(12)}");
             var expected2 = Funcs.StringToReturn($"{12 + (-1) * Math.Tan(456)}");
+            var expected3 = Funcs.StringToReturn("-2.3892583728875938458780835111049");
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
-
+            Assert.That(actual3, Is.EqualTo(expected3));
         }
     }
 }
