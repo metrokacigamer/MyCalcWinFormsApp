@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Text;
+using ConsoleApp1.Functions_Versions;
+using ConsoleApp1.Attributes;
+using ConsoleApp1.Peripherial_Classes;
+
 
 namespace ConsoleApp1
 {
@@ -7,19 +11,6 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var methodInfo = typeof(Funcs).GetMethod("ComputeExpressionV2_1");
-
-            var attribute = Attribute.GetCustomAttribute(methodInfo, typeof(VersionAttribute));
-            if (attribute != null)
-            {
-                var version = ((VersionAttribute)attribute).WasUpgradedInVersion;
-                var description = ((VersionAttribute)attribute).Description;
-                Console.WriteLine($"Version: {version}, Description: {description}{Environment.NewLine}Is Upgraded from previous versions: {((VersionAttribute)attribute).IsUpgradedFromPrevVersions}");
-            }
-            else
-            {
-                Console.WriteLine("given method doesn't have such attribute");
-            }
         }
     }
 }

@@ -1,11 +1,17 @@
 using System.Text;
-using ConsoleApp1;
+using ConsoleApp1.Expression_Formatting;
+using ConsoleApp1.Functions_Versions;
+using ConsoleApp1.Peripherial_Classes;
 
 namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        Funcs Funcs = new Funcs();
+        Functions _functions = new Functions();
+        TrigFunctions _trigFunctions = new TrigFunctions();
+        Parenthesis _parenthesis = new Parenthesis();
+        ExpressionFormatting _expFormat = new ExpressionFormatting();
+
         public Form1()
         {
             InitializeComponent();
@@ -63,7 +69,7 @@ namespace WinFormsApp1
 
         private void buttonDecimal_Click(object sender, EventArgs e)
         {
-            var stringToAdd = Funcs.DecideWhatToAdd(expression_label.Text);
+            var stringToAdd = _expFormat.GetFormattedDecimalString(expression_label.Text);
             expression_label.Text += stringToAdd;
         }
 
@@ -73,7 +79,7 @@ namespace WinFormsApp1
             {
                 expression_label.Text += "0+";
             }
-            else if (!(Funcs.IsOperator(expression_label.Text.Last()) || expression_label.Text.EndsWith('.')))
+            else if (!(Operator.IsOperator(expression_label.Text.Last()) || expression_label.Text.EndsWith('.')))
             {
                 expression_label.Text += '+';
             }
@@ -84,15 +90,20 @@ namespace WinFormsApp1
             if (expression_label.Text == string.Empty || expression_label.Text.EndsWith('.') || expression_label.Text.EndsWith('('))
             {
                 expression_label.Text += "0-";
+
                 return;
             }
-            var lastIsOperator = Funcs.IsOperator(expression_label.Text.Last());
-            var preLastIsNotOperator = !(Funcs.IsOperator(expression_label.Text.Reverse().ToArray()[1]));
+
+            var lastIsOperator = Operator.IsOperator(expression_label.Text.Last());
+            var preLastIsNotOperator = !(Operator.IsOperator(expression_label.Text.Reverse().ToArray()[1]));
+
             if (lastIsOperator && preLastIsNotOperator)
             {
                 expression_label.Text += '-';
+
                 return;
             }
+
             expression_label.Text += '-';
         }
 
@@ -102,7 +113,7 @@ namespace WinFormsApp1
             {
                 expression_label.Text += "0*";
             }
-            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            else if (!Operator.IsOperator(expression_label.Text.Last()))
             {
                 expression_label.Text += '*';
             }
@@ -114,7 +125,7 @@ namespace WinFormsApp1
             {
                 expression_label.Text += "0/";
             }
-            else if (!Funcs.IsOperator(expression_label.Text.Last()))
+            else if (!Operator.IsOperator(expression_label.Text.Last()))
             {
                 expression_label.Text += '/';
             }
@@ -122,19 +133,21 @@ namespace WinFormsApp1
 
         private void buttonEquals_Click(object sender, EventArgs e)
         {
-            if (Funcs.HasUnmatchedParenthesis(expression_label.Text))
+            if (_parenthesis.HasUnmatchedParenthesis(expression_label.Text))
             {
                 MessageBox.Show("Expression contains unmatched parenthesis");
+
                 return;
             }
 
-            var properEnding = Funcs.ProperFinishToTheInput(expression_label.Text);
+            var properEnding = _expFormat.GetFormattedEndingToTheInput(expression_label.Text);
             expression_label.Text += properEnding;
             previous_expression_label.Text = expression_label.Text;
             
             try
             {
-                expression_label.Text = Funcs.ComputeExpressionV2_1(expression_label.Text);
+                var result = _functions.ComputeExpressionV2_1(expression_label.Text);
+                expression_label.Text = _expFormat.GetFormattedOperand(result);
             }
             catch(Exception ex)
             {
@@ -150,13 +163,13 @@ namespace WinFormsApp1
 
         private void button_parenthesis_1_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.DecideHowToAddParenthesis_1(expression_label.Text);
+            var whatToAdd = _parenthesis.GetFormattedParenthesis_1(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
 
         private void button_parenthesis_2_Click(object sender, EventArgs e)
         {
-            var whatToAdd = Funcs.DecideHowToAddParenthesis_2(expression_label.Text);
+            var whatToAdd = _parenthesis.GetFormattedParenthesis_2(expression_label.Text);
             expression_label.Text += whatToAdd;
         }
 
@@ -169,9 +182,6 @@ namespace WinFormsApp1
             else
             {
                 panel1.Visible = true;
-                // You can also load or update the list items here if needed
-                // listBoxItems.Items.Clear();
-                // listBoxItems.Items.AddRange(GetYourListItems());
             }
 
         }
@@ -185,7 +195,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "sin", out var index);
+                var toAdd = _trigFunctions.GetFormattedTrigFunc(expression_label.Text, "sin", out var index);
                 var text = new string(expression_label.Text.Remove(index));
                 expression_label.Text = $"{text}{toAdd}";
             }
@@ -199,7 +209,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cos", out var index);
+                var toAdd = _trigFunctions.GetFormattedTrigFunc(expression_label.Text, "cos", out var index);
                 var text = new string(expression_label.Text.Remove(index));
                 expression_label.Text = $"{text}{toAdd}";
             }
@@ -213,7 +223,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "tan", out var index);
+                var toAdd = _trigFunctions.GetFormattedTrigFunc(expression_label.Text, "tan", out var index);
                 var text = new string(expression_label.Text.Remove(index));
                 expression_label.Text = $"{text}{toAdd}";
             }
@@ -227,7 +237,7 @@ namespace WinFormsApp1
         {
             try
             {
-                var toAdd = Funcs.DecideHowToAddTrigFunc(expression_label.Text, "cot", out var index);
+                var toAdd = _trigFunctions.GetFormattedTrigFunc(expression_label.Text, "cot", out var index);
                 var text = new string(expression_label.Text.Remove(index));
                 expression_label.Text = $"{text}{toAdd}";
             }
