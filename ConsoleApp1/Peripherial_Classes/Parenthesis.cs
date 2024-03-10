@@ -24,7 +24,7 @@ namespace ConsoleApp1.Peripherial_Classes
         [Version("2.1")]
         public string GetFormattedParenthesis_2(string text)
         {
-            if (HasMatchingParenthesis_1(text, out _) || !Operator.IsOperator(text.Last()))
+            if (HasMatchingParenthesis_1(text, out _) && !Operator.IsOperator(text.Last()))
             {
                 return ")";
             }
