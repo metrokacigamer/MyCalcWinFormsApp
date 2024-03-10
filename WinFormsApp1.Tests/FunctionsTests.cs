@@ -213,8 +213,9 @@ namespace WinFormsApp1.Tests
             var testString3 = "7841244";
             var testString4 = "(234654)/(350)*(112)*(3)-()";
             var testString5 = "(23423)+((32)/2)/(20)";
-            var testString6 = "((23423)*(((32)/2)-(23)))";
+            var testString6 = "-((23423)*(((32)/2)-(23)))";
             var testString7 = "45+-(234)";
+            var testString8 = "-(4334)";
 
             //Act
             var actual1 = _funcs.ComputeExpressionV2_1(testString1);
@@ -224,15 +225,18 @@ namespace WinFormsApp1.Tests
             var actual5 = _funcs.ComputeExpressionV2_1(testString5);
             var actual6 = _funcs.ComputeExpressionV2_1(testString6);
             var actual7 = _funcs.ComputeExpressionV2_1(testString7);
+			var actual8 = _funcs.ComputeExpressionV2_1(testString8);
 
-            //Assert
-            var expected1 = "68733696.39999999";
+
+			//Assert
+			var expected1 = "68733696.39999999";
             var expected2 = "177345.248";
             var expected3 = "7841244"; 
             var expected4 = "225267.84";
             var expected5 = "23423.8";
-            var expected6 = "-163961";
+            var expected6 = "163961";
             var expected7 = "-189";
+            var expected8 = "-4334";
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
@@ -241,9 +245,10 @@ namespace WinFormsApp1.Tests
             Assert.That(actual5, Is.EqualTo(expected5));
             Assert.That(actual6, Is.EqualTo(expected6));
             Assert.That(actual7, Is.EqualTo(expected7));
-        }
+			Assert.That(actual8, Is.EqualTo(expected8));
+		}
 
-        [Test]
+		[Test]
         public void ComputeExpressionV2_1_TestingOnTrigFuncs_ExpectNothing()
         {
             //Arrange

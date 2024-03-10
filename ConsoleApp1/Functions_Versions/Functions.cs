@@ -118,7 +118,7 @@ namespace ConsoleApp1.Functions_Versions
             }
             else
             {
-                return "-" + ComputeExpressionV2_1(expression.Substring(2, expression.Length - 3));
+                return ComputeExpressionV2_1("0" + expression);
             }
         }
 
