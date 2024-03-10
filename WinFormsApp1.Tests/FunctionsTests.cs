@@ -213,9 +213,9 @@ namespace WinFormsApp1.Tests
             var testString3 = "7841244";
             var testString4 = "(234654)/(350)*(112)*(3)-()";
             var testString5 = "(23423)+((32)/2)/(20)";
-            var testString6 = "-((23423)*(((32)/2)-(23)))";
+            var testString6 = "((23423)*(((32)/2)-(23)))";
             var testString7 = "45+-(234)";
-            var testString8 = "-(4334)";
+            var testString8 = "-(-4334)";
 
             //Act
             var actual1 = _funcs.ComputeExpressionV2_1(testString1);
@@ -234,9 +234,9 @@ namespace WinFormsApp1.Tests
             var expected3 = "7841244"; 
             var expected4 = "225267.84";
             var expected5 = "23423.8";
-            var expected6 = "163961";
+            var expected6 = "-163961";
             var expected7 = "-189";
-            var expected8 = "-4334";
+            var expected8 = "4334";
 
             Assert.That(actual1, Is.EqualTo(expected1));
             Assert.That(actual2, Is.EqualTo(expected2));
